@@ -1,0 +1,14 @@
+<publishData>
+  <publishTarget publishUrl="http://icslicense:81/">
+    <file relUrl="bin/ICSLicenseMaint.dll" publishTime="07/21/2008 13:38:44" />
+    <file relUrl="mn_hdr_top.jpg" publishTime="07/14/2008 12:22:18" />
+    <file relUrl="bin/ICSLicenseMaint.pdb" publishTime="07/21/2008 13:38:44" />
+    <file relUrl="logo_ics_medium.jpg" publishTime="07/02/2008 13:29:56" />
+    <file relUrl="Web.config" publishTime="07/14/2008 12:21:04" />
+    <file relUrl="Default.aspx" publishTime="07/14/2008 13:45:39" />
+    <file relUrl="icslogo.JPG" publishTime="07/14/2008 13:40:45" />
+    <file relUrl="bin/Telerik.Web.UI.dll" publishTime="04/14/2008 21:36:00" />
+    <file relUrl="bin/Telerik.Web.UI.xml" publishTime="04/15/2008 21:35:40" />
+    <file relUrl="LicensesUserControl.ascx" publishTime="06/27/2008 11:27:23" />
+  </publishTarget>
+</publishData>
