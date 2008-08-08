@@ -154,7 +154,8 @@ namespace ICSLicenseMaint
                             string thisCustomer = item.OwnerTableView.ParentItem.GetDataKeyValue("CustomerID").ToString();
                             string thisCustomerName = item.OwnerTableView.ParentItem["CustomerName"].Text;
                             Customers.Items.Add(new RadComboBoxItem(thisCustomerName,thisCustomer));
-                            SetControlReadOnly(ref Customers, true);
+                            
+                            //SetControlReadOnly(ref Customers, true);
 
 
                             TextBox SiteIDBox = FindTb(item,"SiteIDBox");
