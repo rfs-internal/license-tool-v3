@@ -258,13 +258,19 @@ namespace ICSLicenseMaint
                             ada = new SqlDataAdapter(selectCommandText, Conn);
 
                             rows = ada.Fill(customers);
+                            int selectedIndex = 0;
                             for (int i = 0; i < rows; i++)
                             {
                                 ItemToAdd = customers.Rows[i].ItemArray[1].ToString();
                                 ValueToAdd = customers.Rows[i].ItemArray[0].ToString();
+                                if (ValueToAdd == thisCustomer)
+                                {
+                                    selectedIndex = i;
+                                }
                                 CustomerIDBox.Items.Add(new RadComboBoxItem(ItemToAdd, ValueToAdd));
                                 
                             }
+                            CustomerIDBox.Items[selectedIndex].Selected = true;
                             
                             //CustomerIDBox.SelectedIndex = CustomerIDBox.Items.IndexOf(new ListItem(e.Item.OwnerTableView.ParentItem.GetDataKeyValue("CustomerID").ToString(),e.Item.OwnerTableView.ParentItem["CustomerName"].Text));
 
