@@ -11,7 +11,7 @@
           <SQLDebugging>True</SQLDebugging>
           <PublishCopyOption>RunFiles</PublishCopyOption>
           <PublishTargetLocation>http://icslicense:81/</PublishTargetLocation>
-          <PublishDeleteAllFiles>True</PublishDeleteAllFiles>
+          <PublishDeleteAllFiles>False</PublishDeleteAllFiles>
           <PublishCopyAppData>True</PublishCopyAppData>
           <ExternalProgram>
           </ExternalProgram>
