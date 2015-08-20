@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ICSLicenseMaintV2.License>
+
+@{
+    ViewBag.Title = ViewBag.CustomerName + " Licenses";
+}
+
+<h2>Licenses</h2>
+<h3>
+    <a href="@Url.Action("Index", "CustomerSites", new { id = ViewBag.CustomerID })">@ViewBag.CustomerName</a>
+    <span> \ </span>
+    @(ViewBag.SiteID == null ? "All Licenses" : ViewBag.SiteName)
+</h3>
+
+<table class="table table-condensed table-hover data">
+    <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Machine ID</th>
+            <th>Machine Name</th>
+            <th>Users</th>
+            <th>Permanent</th>
+            <th>Expires</th>
+            <th>Last Request</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+    <tr class="@(item.IsExpired ? "danger" : "")">
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.LicenseID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.LicenseID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LicenseID)
+        </td>
+        <td title="@item.MachineID">
+            @Html.DisplayFor(modelItem => item.ShortMachineID)
+            <span style="display:none">@item.MachineID</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MachineName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalUserCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsPermanent)
+        </td>
+        <td>@(item.IsPermanent ? "-" : item.ExpiryDate.ToShortDateString())</td>
+        <td>@item.LastRequestedUpdate.ToShortDateString()</td>
+    </tr>
+}
+    </tbody>
+
+</table>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ICSLicenseMaintV2.ProductModule>
+
+@{
+    ViewBag.Title = "Modules";
+}
+
+<h2>Modules</h2>
+
+<table class="table table-condensed table-hover data">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Product</th>
+            <th>Module Name</th>
+            <th>Include In Demo</th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModuleName)
+        </td>
+        <td>
+            <input type="checkbox" disabled="disabled" @(item.IncludeInDemo == true ? "checked=\"\"" : "")/>
+        </td>
+    </tr>
+}
+
+</table>

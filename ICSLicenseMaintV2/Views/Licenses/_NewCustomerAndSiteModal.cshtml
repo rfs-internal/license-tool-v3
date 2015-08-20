@@ -1,0 +1,24 @@
+﻿@model ICSLicenseMaintV2.License
+<div class="modal fade" id="newCustomerSiteModal" tabindex="-1" role="dialog" aria-labelledby="newCustomerSiteModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm(new { action = "AssignToNewCustomerAndSite" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">New Customer and Site</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="LicenseID" value="@Model.LicenseID" />
+                    @Html.Partial("NewCustomerAndSite", (ICSLicenseMaintV2.ViewModels.NewCustomerAndSiteModel)ViewBag.NewCustomerAndSiteModel ?? new ICSLicenseMaintV2.ViewModels.NewCustomerAndSiteModel { SiteID = "Default", SiteName = "Default" })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" value="Save changes" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

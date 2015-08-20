@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ICSLicenseMaintV2.ViewModels.CustomerInfo>
+
+@{
+    ViewBag.Title = "Customers";
+}
+
+<h2>Customers</h2>
+
+<a href="@Url.Action("Create")" class="btn btn-success">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Customer
+</a>
+
+<table class="table table-condensed table-hover data">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Sites</th>
+            <th>Licenses</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CustomerID }) |
+                    @Html.ActionLink("Sites", "Index", "CustomerSites", new { id = item.CustomerID }, new { })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                    <span style="display:none">@item.CustomerID</span>
+                </td>
+                <td>
+                    <a href="@Url.Action("Index", "CustomerSites", new { id=item.CustomerID })">@item.SiteCount</a>
+                </td>
+                <td>
+                    <a href="@Url.Action("Index", "Licenses", new { customerId=item.CustomerID })">@item.LicenseCount</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

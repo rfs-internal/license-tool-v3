@@ -1,0 +1,111 @@
+﻿@model ICSLicenseMaintV2.License
+
+@{
+    ViewBag.Title = string.Format("{0} License: {1}", ViewBag.CustomerName, Model.LicenseID);
+}
+
+@section Scripts{
+    <script>
+        function HeaderViewModel() {
+            var self = this;
+            self.customer = ko.observable();
+            self.site = ko.observable();
+
+            self.customers = [];
+            self.sites = [];
+            self.customersites = ko.observableArray([]);
+
+            self.init = function(customerid, siteid){
+                self.customer(customerid);
+                self.updateCustomerSites(customerid);
+                self.site(siteid);
+                self.customer.subscribe(self.updateCustomerSites);
+            };
+
+            self.updateCustomerSites = function(customerid){
+                var customersites = self.sites.filter(function (s) { return s.customerid == customerid });
+                self.customersites(customersites);
+            }
+        }
+
+        function DetailViewModel() {
+            var self = this;
+            self.modules = [];
+            self.module = {};
+            self.licensedModules = ko.observableArray();
+
+            self.addModule = function () {
+                var modules = self.licensedModules();
+                modules.push(self.module);
+                modules = modules.sort(function (l, r) { return l.name < r.name ? -1 : 1; });
+                self.licensedModules(modules);
+            }
+
+            self.removeModule = function(module){
+                self.licensedModules.remove(module);
+            };
+
+            self.removeAll = function () {
+                self.licensedModules([]);
+            }
+
+            self.applyChanges = function () {
+                var lookup = {};
+                var temp = self.licensedModules();
+                temp.forEach(function (t) { lookup[t.id] = true; });
+                var selections = self.modules.filter(function (m) { return m.selected() });
+                selections.forEach(function (m) {
+                    if (!lookup[m.id]) {
+                        temp.push(m);
+                    }
+                });
+                temp = temp.sort(function (l, r) { return l.name < r.name ? -1 : 1; });
+                self.licensedModules(temp);
+                self.modules.forEach(function (m) { m.selected(false); });
+            }
+        }
+
+        $(document).ready(function () {
+            $.get('/Customers/All', undefined, function(customers){
+                $.get('/CustomerSites/All', undefined, function (sites) {
+                    var viewModel = new HeaderViewModel();
+                    viewModel.customers = customers;
+                    viewModel.sites = sites;
+                    viewModel.init('@Model.CustomerID', '@Model.SiteID');
+                    ko.applyBindings(viewModel, document.getElementById('licenseHeader'));
+                });
+            });
+
+            $.get('/Licenses/Modules', { id: '@Model.LicenseID' }, function(data){
+                var viewModel = new DetailViewModel();
+                viewModel.modules = data.modules;
+                viewModel.modules.forEach(function (module) {
+                    module.selected = ko.observable(false);
+                });
+                viewModel.licensedModules(data.licensedModules);
+                ko.applyBindings(viewModel, document.getElementById('licenseDetail'));
+            });
+            
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<h2>License</h2>
+<h3>
+    <a href="@Url.Action("Index", "Licenses", new { customerId = Model.CustomerID })">@Model.CustomerSite.Customer.CustomerName</a>
+    <span> \ </span>
+    <a href="@Url.Action("Index", "Licenses", new { customerId = Model.CustomerID, siteId = Model.SiteID })">@Model.CustomerSite.SiteName</a>
+</h3>
+
+@Html.Partial("_LicenseHeader")
+
+<hr />
+<h2>Modules</h2>
+
+@Html.Partial("_LicenseDetail")
+
+@Html.Partial("_NewCustomerAndSiteModal")
+
+@Html.Partial("_NewSiteModal")

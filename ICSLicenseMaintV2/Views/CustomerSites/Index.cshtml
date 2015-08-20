@@ -1,0 +1,43 @@
+﻿@model ICSLicenseMaintV2.Customer
+
+@{
+    ViewBag.Title = Model.CustomerName;
+}
+
+<h2>Sites</h2>
+
+<h3>@Model.CustomerName</h3>
+
+<a href="@Url.Action("Index", "Licenses", new { customerId = Model.CustomerID})" class="btn btn-primary">All Licenses</a>
+<a href="@Url.Action("Create", new { id = Model.CustomerID })" class="btn btn-success">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Site
+</a>
+<table class="table table-condensed table-hover data">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Site Name</th>
+            <th>Site Description</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.CustomerSites)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { customerId = Model.CustomerID, siteId = item.SiteID }) |
+                    @Html.ActionLink("Licenses", "Index", "Licenses", new { customerId = Model.CustomerID, siteId = item.SiteID }, new { }) |
+                    @Html.ActionLink("Delete", "Delete", new { customerId = Model.CustomerID, siteId = item.SiteID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteDescription)
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

@@ -1,0 +1,89 @@
+﻿@model ICSLicenseMaintV2.License
+
+
+@using (Html.BeginForm(new { action = "EditModules" }))
+{
+    @Html.HiddenFor(m=>m.LicenseID)
+    @Html.AntiForgeryToken()
+    <div id="licenseDetail" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Module">Add Module:</label>
+            <div class="col-md-4">
+                <select data-bind="options: modules, value: module, optionsText: 'name'" class="form-control"></select>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-success" type="button" data-bind="click: addModule">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Module
+                </button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#addModulesModal" type="button">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Modules
+                </button>
+                <button class="btn btn-danger" data-toggle="modal" type="button" data-bind="click: removeAll">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Delete All Modules
+                </button>
+            </div>
+        </div>
+        
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: licensedModules">
+                <tr>
+                    <td>
+                        <a data-bind="click: $root.removeModule">Delete</a>
+                    </td>
+                    <td>
+                        <input type="hidden" data-bind="value: id" name="Modules"/>
+                        <span data-bind="text: name"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+         
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save Modules" class="btn btn-primary pull-right" />
+            </div>
+        </div>
+
+        <div class="modal fade" id="addModulesModal" tabindex="-1" role="dialog" aria-labelledby="addModulesModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add Modules</h4>
+                            <input type="submit" class="btn btn-primary pull-right" value="Save changes" data-bind="click: applyChanges"  data-dismiss="modal" />
+                            <div style="clear:both;"></div>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Module</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: modules">
+                                    <tr data-bind="click: function(m){ m.selected(!m.selected()) }">
+                                        <td>
+                                            <input type="checkbox" data-bind="checked: selected"/>
+                                        </td>
+                                        <td data-bind="text: name"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary pull-right" value="Save changes" data-bind="click: applyChanges"  data-dismiss="modal"/>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
