@@ -34,6 +34,8 @@
             self.module = {};
             self.licensedModules = ko.observableArray();
 
+            self.filter = ko.observable('');
+
             self.addModule = function () {
                 var modules = self.licensedModules();
                 modules.push(self.module);
@@ -47,7 +49,15 @@
 
             self.removeAll = function () {
                 self.licensedModules([]);
-            }
+            };
+
+            self.toggleVisible = function () {
+                var visibleModules = self.modules.filter(function (m) { return m.isvisible() });
+                if (visibleModules.length > 0) {
+                    var state = visibleModules[0].selected();
+                    visibleModules.forEach(function (m) { m.selected(!state); });
+                }
+            };
 
             self.applyChanges = function () {
                 var lookup = {};
@@ -71,16 +81,23 @@
                     var viewModel = new HeaderViewModel();
                     viewModel.customers = customers;
                     viewModel.sites = sites;
-                    viewModel.init('@Model.CustomerID', '@Model.SiteID');
+                    viewModel.init('@Html.Raw(Model.CustomerID)', '@Html.Raw(Model.SiteID)');
                     ko.applyBindings(viewModel, document.getElementById('licenseHeader'));
                 });
             });
 
-            $.get('/Licenses/Modules', { id: '@Model.LicenseID' }, function(data){
+            $.get('/Licenses/Modules', { id: '@Html.Raw(Model.LicenseID)' }, function(data){
                 var viewModel = new DetailViewModel();
                 viewModel.modules = data.modules;
                 viewModel.modules.forEach(function (module) {
                     module.selected = ko.observable(false);
+                    module.isvisible = ko.computed(function () {
+                        var text = viewModel.filter().toLowerCase();
+                        if (text) {
+                            return module.name.toLowerCase().indexOf(text) > -1;
+                        }
+                        return true;
+                    }).extend({ rateLimit: 500 });
                 });
                 viewModel.licensedModules(data.licensedModules);
                 ko.applyBindings(viewModel, document.getElementById('licenseDetail'));

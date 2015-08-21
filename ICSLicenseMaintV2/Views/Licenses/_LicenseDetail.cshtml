@@ -60,6 +60,8 @@
                             <div style="clear:both;"></div>
                         </div>
                         <div class="modal-body">
+                            <input type="text" data-bind="value: filter, valueUpdate: 'keyup'" class="form-control pull-left"/>
+                            <button class="btn btn-primary" data-bind="click: toggleVisible" style="margin-left: 10px">Toggle All Visible</button>
                             <table class="table table-condensed table-hover">
                                 <thead>
                                     <tr>
@@ -68,7 +70,7 @@
                                     </tr>
                                 </thead>
                                 <tbody data-bind="foreach: modules">
-                                    <tr data-bind="click: function(m){ m.selected(!m.selected()) }">
+                                    <tr data-bind="if: isvisible, click: function(m){ m.selected(!m.selected()) }">
                                         <td>
                                             <input type="checkbox" data-bind="checked: selected"/>
                                         </td>

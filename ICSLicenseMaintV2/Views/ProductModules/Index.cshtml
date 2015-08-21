@@ -19,7 +19,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new { id = item.ModuleID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Product.ProductName)

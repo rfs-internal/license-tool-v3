@@ -126,13 +126,16 @@ namespace ICSLicenseMaintV2.Controllers
 
         public JsonResult Modules(int id)
         {
-            var allModules = db.ProductModules.OrderBy(m=>m.ModuleName).Select(m => new { id = m.ModuleID, name = m.ModuleName }).ToList();
+            var allModules = db.ProductModules
+                .OrderBy(m=>m.ModuleName)
+                .Select(m => new { id = m.ModuleID, name = m.ModuleName })
+                .ToList();
 
             var myModules = from licensedModule in db.LicensedModules
-                    join productModule in db.ProductModules on licensedModule.ModuleID equals productModule.ModuleID
-                    where licensedModule.LicenseID == id
-                    orderby productModule.ModuleName
-                    select new { id = productModule.ModuleID, name = productModule.ModuleName };
+                            join productModule in db.ProductModules on licensedModule.ModuleID equals productModule.ModuleID 
+                            where licensedModule.LicenseID == id
+                            orderby productModule.ModuleName
+                            select new { id = productModule.ModuleID, name = productModule.ModuleName };
 
             return Json(new { modules = allModules, licensedModules = myModules }, JsonRequestBehavior.AllowGet);
         }

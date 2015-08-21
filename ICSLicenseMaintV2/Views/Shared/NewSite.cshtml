@@ -5,7 +5,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.SiteID, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.SiteID, new { htmlAttributes = new { @class = "form-control", placeholder = "Site ID" } })
+            @Html.EditorFor(model => model.SiteID, new { htmlAttributes = new { @class = "form-control", placeholder = "Site ID", autofocus = "" } })
             @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
         </div>
     </div>

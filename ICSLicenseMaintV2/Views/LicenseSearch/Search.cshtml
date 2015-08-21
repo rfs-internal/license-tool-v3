@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ICSLicenseMaintV2.License>
+
+@{
+    ViewBag.Title = "Search Results";
+}
+
+<h2>Search</h2>
+
+@using (Html.BeginForm())
+{
+    <input type="text" class="form-control input-lg" id="searchCriteria" name="searchText" placeholder="Search for machine name, customer, license id, etc." style="max-width:unset;" autofocus>
+}
+@if (Model.Any())
+{
+    <hr />
+    <h3>Results</h3>
+    @Html.Partial("_LicenseList")
+}

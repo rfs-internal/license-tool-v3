@@ -18,7 +18,7 @@ namespace ICSLicenseMaintV2.Controllers
         public ActionResult Index()
         {
             var productModules = db.ProductModules.Include(p => p.Product);
-            return View(productModules.ToList());
+            return View(productModules.OrderBy(p=>p.ModuleName).ToList());
         }
         
         // GET: ProductModules/Edit/5
@@ -26,9 +26,9 @@ namespace ICSLicenseMaintV2.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             }
-            ProductModule productModule = db.ProductModules.Find(id);
+            ProductModule productModule = db.ProductModules.Single(pm => pm.ModuleID == id);
             if (productModule == null)
             {
                 return HttpNotFound();
