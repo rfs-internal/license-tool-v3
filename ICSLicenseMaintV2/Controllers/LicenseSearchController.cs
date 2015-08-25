@@ -10,56 +10,46 @@ namespace ICSLicenseMaintV2.Controllers
 {
     public class LicenseSearchController : Controller
     {
-        private ICSLicenses db = new ICSLicenses();
+        private ICSLicenses db = DbContextFactory.CreateInstance();
         private const int LIMIT = 200;
 
-        // GET: LicenseSearch
-        public ActionResult Search(string searchText)
+        [HttpPost]
+        public JsonResult SearchAjax(string searchText, int page = 0)
         {
-            if(string.IsNullOrWhiteSpace(searchText))
-            {
-                this.AddAlert(AlertModel.Error("No search criteria provided"));
-                return View(Enumerable.Empty<License>());
-            }
-
-            searchText = searchText.Trim();
-
-            int licenseId = -1;
-            if(Int32.TryParse(searchText, out licenseId))
-            {
-                var license = db.Licenses.SingleOrDefault(l => l.LicenseID == licenseId);
-                if(license != null)
-                {
-                    return RedirectToAction("Edit", "Licenses", new { id = license.LicenseID });
-                }
-            }
-
             var licenses = db.Licenses.AsQueryable();
-            foreach(var part in searchText.Split(' '))
+            foreach (var part in searchText.Split(' '))
             {
                 licenses = licenses.Where(l =>
+                l.LicenseID.ToString().Contains(part) ||
                 l.MachineID.Contains(part) ||
                 l.MachineName.Contains(part) ||
                 l.CustomerSite.Customer.CustomerName.Contains(part) ||
                 l.CustomerSite.SiteName.Contains(part));
             }
 
-            var results = licenses.Take(LIMIT).ToList();
+            var results = licenses.OrderByDescending(l=>l.LicenseID).Skip(LIMIT * page).Take(LIMIT).ToList().Select(l => new
+            {
+                IsPermanent = l.IsPermanent,
+                TotalUserCount = l.TotalUserCount,
+                MachineName = l.MachineName,
+                MachineID = l.MachineID,
+                CustomerName = l.CustomerSite.Customer.CustomerName,
+                LicenseID = l.LicenseID,
+                IsExpired = l.IsExpired,
+                InstallPath = l.InstallPath,
+                ExpiryDate = l.ExpiryDate.ToShortDateString(),
+                LastRequestedUpdate = l.LastRequestedUpdate.ToShortDateString(),
+                ShortMachineID = l.ShortMachineID
+            }).ToList();
 
-            if (results.Count == 0)
-            {
-                this.AddAlert(AlertModel.Warning(string.Format("No results found for: <b>{0}</b>", searchText)));
-            }
-            else if (results.Count == 1)
-            {
-                return RedirectToAction("Edit", "Licenses", new { id = results[0].LicenseID });
-            }
-            else if (results.Count == LIMIT)
-            {
-                this.AddAlert(AlertModel.Warning(string.Format("Only showing {0} results. Narrow down your search.", LIMIT)));
-            }
 
-            return View(results);
+            return Json(new { results = results, canLoadMore = results.Count == LIMIT });
+        }
+
+        // GET: LicenseSearch
+        public ActionResult Search(string searchText)
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

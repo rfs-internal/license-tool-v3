@@ -13,7 +13,7 @@ namespace ICSLicenseMaintV2.Controllers
 {
     public class CustomerSitesController : Controller
     {
-        private ICSLicenses db = new ICSLicenses();
+        private ICSLicenses db = DbContextFactory.CreateInstance();
 
         // GET: CustomerSites
         public ActionResult Index(string id)

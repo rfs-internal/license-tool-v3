@@ -4,15 +4,124 @@
     ViewBag.Title = "Search Results";
 }
 
+@section Scripts {
+    <script>
+        function SearchViewModel() {
+            var self = this;
+            self.searchText = ko.observable();
+            self.licenses = ko.observableArray();
+            self.canLoadMore = ko.observable(false);
+            self.loading = ko.observable(false);
+            self.page = 0;
+            self.hasResults = ko.computed(function () {
+                return self.licenses().length > 0;
+            });
+
+            $(document)
+                .ajaxStart(function () { self.loading(true); })
+                .ajaxStop(function () { self.loading(false); });
+
+            //self.licenses.subscribe(function () {
+            //    $('#searchResultsTable').DataTable({
+            //        destroy: true,
+            //        bPaginate: false
+            //    });
+            //});
+
+            self.delayedValue = ko.pureComputed(this.searchText)
+                .extend({ rateLimit: { method: "notifyWhenChangesStop", timeout: 400 } });
+
+            self.delayedValue.subscribe(function (val) {
+                if (val !== '') {
+                    if (self.request) {
+                        self.request.abort();
+                    }
+                    self.page = 0;
+                    self.request = $.post('/LicenseSearch/SearchAjax', { searchText: val, page: self.page }, function (data) {
+                        self.licenses(data.results);
+                        self.canLoadMore(data.canLoadMore)
+                        self.request = undefined;
+                    });
+                } else {
+                    self.licenses([]);
+                    self.canLoadMore(false);
+                }
+            }, self);
+            
+            self.loadMore = function () {
+                if (self.request) {
+                    self.request.abort();
+                }
+                self.page++;
+                self.request = $.post('/LicenseSearch/SearchAjax', { searchText: self.searchText(), page: self.page }, function (data) {
+                    var temp = self.licenses();
+                    self.licenses(temp.concat(data.results));
+                    self.canLoadMore(data.canLoadMore);
+                    self.request = undefined;
+                });
+            };
+        }
+
+        $(document).ready(function () {
+            ko.applyBindings(new SearchViewModel());
+        });
+    </script>
+}
+
 <h2>Search</h2>
 
-@using (Html.BeginForm())
-{
-    <input type="text" class="form-control input-lg" id="searchCriteria" name="searchText" placeholder="Search for machine name, customer, license id, etc." style="max-width:unset;" autofocus>
-}
-@if (Model.Any())
-{
-    <hr />
-    <h3>Results</h3>
-    @Html.Partial("_LicenseList")
-}
+<div class="row">
+    <div class="col-md-11">
+        <input type="text" class="form-control input-lg" placeholder="Search for machine name, customer, license id, etc." style="max-width:unset;" autofocus data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']">
+    </div>
+    <div class="col-md-1">
+        <!-- ko if: loading -->
+            <img src="~/Content/loading.gif" width="45" height="45"/>
+        <!-- /ko -->
+    </div>
+</div>
+
+<!-- ko if: hasResults -->
+<hr />
+<h3>Results</h3>
+<table class="table table-condensed table-hover" id="searchResultsTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Machine Name</th>
+            <th>Users</th>
+            <th>Permanent</th>
+            <th>Expires</th>
+            <th>Last Request</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: licenses">
+        <tr data-bind="css: { danger: IsExpired }">
+            <td>
+                <a data-bind="attr: { href: '/Licenses/Edit/'+LicenseID }">Edit</a> |
+                <a data-bind="attr: { href: '/Licenses/Delete/'+LicenseID }">Delete</a>
+            </td>
+            <td data-bind="text: LicenseID"></td>
+            @*<td data-bind="attr: { title: MachineID }, text: ShortMachineID"></td>*@
+            <td data-bind="text: CustomerName"></td>
+            <td data-bind="text: MachineName"></td>
+            <td data-bind="text: TotalUserCount"></td>
+            <td>
+                <input type="checkbox" disabled readonly data-bind="checked: IsPermanent"/>
+            </td>
+            <td>
+                <span data-bind="if: IsPermanent">-</span>
+                <!-- ko if: !IsPermanent-->
+                <span data-bind="text: ExpiryDate"></span>
+                <!-- /ko -->
+            </td>
+            <td data-bind="text: LastRequestedUpdate"></td>
+        </tr>
+    </tbody>
+</table>
+<!-- /ko -->
+<!-- ko if: canLoadMore -->
+<button class="btn btn-primary" data-bind="click: loadMore" type="Button">Load More</button>
+<!-- /ko -->

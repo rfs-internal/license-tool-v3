@@ -10,15 +10,21 @@ namespace ICSLicenseMaintV2.Controllers
 {
     public class LicensesController : Controller
     {
-        private ICSLicenses db = new ICSLicenses();
+        private ICSLicenses db = DbContextFactory.CreateInstance();
         private readonly IPermissionAuthorized permissionAuth = new PermissionAuthorized();
+
+        public ActionResult All()
+        {
+            var licenses = db.Licenses.ToList();
+            return View(licenses);
+        }
 
         // GET: Licenses
         public ActionResult Index(string customerId, string siteId = null, string sort = "LicenseID", bool ascending = true)
         {
             if (customerId == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Search", "LicenseSearch");
             }
 
             var licenses = db.Licenses.Where(l => l.CustomerID == customerId);

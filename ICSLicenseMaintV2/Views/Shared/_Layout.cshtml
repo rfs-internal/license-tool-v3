@@ -18,19 +18,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("RF-SMART V3 License Tool", "Index", "Customers", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("RF-SMART V3 License Tool", "Search", "LicenseSearch", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("All Licenses", "All", "Licenses")</li>
                     <li>@Html.ActionLink("Demo Licenses", "Index", "Licenses", new { customerId="DEMO", siteId="TRIAL0001", sort = "LastRequestedUpdate", ascending=false }, new { })</li>
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     @if (IsAuthorized)
                     {
                         <li>@Html.ActionLink("Modules", "Index", "ProductModules")</li>
                     }
-                    <li>
-                        <a href="#" data-toggle="modal" data-target="#searchModal">Search</a>
-                    </li>
+                    <li>@Html.ActionLink("Search", "Search", "LicenseSearch")</li>
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
@@ -45,7 +44,6 @@
             </div>
         }
         @RenderBody()
-        @Html.Partial("_SearchModal")
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year</p>

@@ -15,7 +15,7 @@ namespace ICSLicenseMaintV2
     {
         public bool IsAuthorized(string userId)
         {
-            using (var context = new ICSLicenses())
+            using (var context = DbContextFactory.CreateInstance())
             {
                 return context.Permissions.Where(p => p.Userid == userId).Any();
             }

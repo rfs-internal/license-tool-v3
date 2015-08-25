@@ -52,6 +52,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -137,6 +141,8 @@
     <Compile Include="Controllers\LicenseSearchController.cs" />
     <Compile Include="Controllers\ProductModulesController.cs" />
     <Compile Include="LicenseWebViewPage.cs" />
+    <Compile Include="Models\DbContextFactory.cs" />
+    <Compile Include="RequestDurationLoggerModule.cs" />
     <Compile Include="Utils\LinqExtensions.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerSite.cs" />
@@ -167,12 +173,14 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\favicon.ico" />
+    <Content Include="Content\loading.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="log4net.config" />
     <None Include="Properties\PublishProfiles\RFS5-HELP-TEST.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -222,6 +230,7 @@
     <Content Include="Views\Shared\_SearchModal.cshtml" />
     <Content Include="Views\LicenseSearch\Search.cshtml" />
     <Content Include="Views\Shared\_LicenseList.cshtml" />
+    <Content Include="Views\Licenses\All.cshtml" />
     <None Include="Web.Release-Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

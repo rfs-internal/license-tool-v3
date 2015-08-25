@@ -12,7 +12,7 @@ namespace ICSLicenseMaintV2.Controllers
     [PermissionsAuthorize]
     public class ProductModulesController : Controller
     {
-        private ICSLicenses db = new ICSLicenses();
+        private ICSLicenses db = DbContextFactory.CreateInstance();
 
         // GET: ProductModules
         public ActionResult Index()
