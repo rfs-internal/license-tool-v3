@@ -18,7 +18,7 @@ namespace ICSLicenseMaintV2.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            var customerInfos = db.Database.SqlQuery<CustomerInfo>("SELECT C.CustomerID, C.CustomerName, COUNT(DISTINCT CS.SiteID) AS SiteCount, COUNT(DISTINCT L.LicenseID) AS LicenseCount FROM Customers C LEFT JOIN CustomerSites CS ON CS.CustomerID = C.CustomerID LEFT JOIN Licenses L ON L.CustomerID = C.CustomerID GROUP BY C.CustomerID, C.CustomerName ORDER By C.CustomerName");
+            var customerInfos = db.Database.SqlQuery<CustomerInfo>("SELECT C.CustomerID, C.CustomerName, COUNT(DISTINCT L.LicenseID) AS LicenseCount FROM Customers C LEFT JOIN Licenses L ON L.CustomerID = C.CustomerID GROUP BY C.CustomerID, C.CustomerName ORDER By C.CustomerName");
             return View(customerInfos.ToList());
         }
 

@@ -25,18 +25,6 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="SiteID">Site</label>
-            <div class="col-md-4">
-                <select name="SiteID" data-bind="options: customersites, value: site, optionsText: 'name', optionsValue: 'id'" class="form-control"></select>
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-success" data-toggle="modal" data-target="#newSiteModal" type="button">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Site
-                </button>
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.TotalUserCount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-4">
                 @Html.EditorFor(model => model.TotalUserCount, new { htmlAttributes = new { @class = "form-control", Name = "UserCount" } })

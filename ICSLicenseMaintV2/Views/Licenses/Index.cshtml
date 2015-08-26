@@ -6,9 +6,7 @@
 
 <h2>Licenses</h2>
 <h3>
-    <a href="@Url.Action("Index", "CustomerSites", new { id = ViewBag.CustomerID })">@ViewBag.CustomerName</a>
-    <span> \ </span>
-    @(ViewBag.SiteID == null ? "All Licenses" : ViewBag.SiteName)
+    @ViewBag.CustomerName
 </h3>
 
 @Html.Partial("_LicenseList")

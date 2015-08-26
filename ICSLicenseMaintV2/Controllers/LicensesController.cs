@@ -1,5 +1,6 @@
 ﻿using ICSLicenseMaintV2.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -13,37 +14,28 @@ namespace ICSLicenseMaintV2.Controllers
         private ICSLicenses db = DbContextFactory.CreateInstance();
         private readonly IPermissionAuthorized permissionAuth = new PermissionAuthorized();
 
-        public ActionResult All()
-        {
-            var licenses = db.Licenses.ToList();
-            return View(licenses);
-        }
-
         // GET: Licenses
-        public ActionResult Index(string customerId, string siteId = null, string sort = "LicenseID", bool ascending = true)
+        public ActionResult Index(string id, string sort = "LicenseID", bool ascending = true)
         {
-            if (customerId == null)
+            if (id == null)
             {
-                return RedirectToAction("Search", "LicenseSearch");
+                this.AddAlert(AlertModel.Warning(string.Format("Could not find customer id: <b>{0}</b>", id)));
+                return RedirectToAction("Index", "LicenseSearch");
             }
 
-            var licenses = db.Licenses.Where(l => l.CustomerID == customerId);
-
-            ViewBag.CustomerID = customerId;
-            ViewBag.CustomerName = db.Customers.Single(c => c.CustomerID == customerId).CustomerName;
-            ViewBag.SiteID = siteId;
-
-            if (siteId != null)
+            ViewBag.CustomerID = id;
+            try
             {
-                licenses = licenses.Where(l => l.SiteID == siteId);
-                var customerSite = db.CustomerSites.SingleOrDefault(cs => cs.CustomerID == customerId && cs.SiteID == siteId);
-                if(customerSite == null)
-                {
-                    return RedirectToAction("Index", new { customerId = customerId, sort = sort, ascending = ascending });
-                }
-                ViewBag.SiteName = customerSite.SiteName;
+                ViewBag.CustomerName = db.Customers.Single(c => c.CustomerID == id).CustomerName;
+            }
+            catch(Exception ex)
+            {
+                this.AddAlert(AlertModel.Warning(string.Format("Could not find customer id: <b>{0}</b>", id)));
+                return RedirectToAction("Index", "LicenseSearch");
             }
 
+            var licenses = db.Licenses.Where(l => l.CustomerID == id);
+            
             return View(licenses.OrderByField(sort, ascending).ToList());
         }
 
@@ -73,8 +65,27 @@ namespace ICSLicenseMaintV2.Controllers
         public ActionResult Edit([Bind(Include = "LicenseID,CustomerID,SiteID,AddDays,UserCount,IsPermanent")] LicenseEditModel edit)
         {
             var license = db.Licenses.Find(edit.LicenseID);
-            license.CustomerID = edit.CustomerID;
-            license.SiteID = edit.SiteID;
+            if(license.CustomerID != edit.CustomerID)
+            {
+                edit.CustomerID = edit.CustomerID.ToUpper();
+                // They changed customers, set a new CustomerSite
+                var customerSite = db.CustomerSites.FirstOrDefault(s => s.CustomerID == edit.CustomerID);
+                if (customerSite == null)
+                {
+                    // This customer doesn't have any customer sites, create one:
+                    customerSite = new CustomerSite
+                    {
+                        CustomerID = edit.CustomerID,
+                        SiteID = edit.CustomerID,
+                        SiteName = license.CustomerSite.Customer.CustomerName,
+                        SiteDescription = string.Empty
+                    };
+                    db.CustomerSites.Add(customerSite);
+                }
+
+                license.CustomerID = customerSite.CustomerID;
+                license.SiteID = customerSite.SiteID;
+            }
 
             if(permissionAuth.IsAuthorized(HttpContext.User.Identity.Name))
             {
@@ -182,27 +193,29 @@ namespace ICSLicenseMaintV2.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.CustomerID = model.CustomerID.ToUpper();
+
                 var customer = db.Customers.SingleOrDefault(c => c.CustomerID == model.CustomerID);
                 if (customer == null)
                 {
                     customer = new Customer
                     {
-                        CustomerID = model.CustomerID.ToUpper(),
+                        CustomerID = model.CustomerID,
                         CustomerName = model.CustomerName
                     };
                     db.Customers.Add(customer);
                 }
                 model.CustomerID = customer.CustomerID;
 
-                var customerSite = db.CustomerSites.SingleOrDefault(cs => cs.CustomerID == model.CustomerID && cs.SiteID == model.SiteID);
+                var customerSite = db.CustomerSites.FirstOrDefault(cs => cs.CustomerID == model.CustomerID);
                 if (customerSite == null)
                 {
                     customerSite = new CustomerSite
                     {
                         CustomerID = model.CustomerID,
-                        SiteID = model.SiteID.ToUpper(),
-                        SiteDescription = model.SiteDescription,
-                        SiteName = model.SiteName
+                        SiteID = model.CustomerID,
+                        SiteDescription = model.CustomerName,
+                        SiteName = model.CustomerName
                     };
                     db.CustomerSites.Add(customerSite);
                 }
@@ -216,36 +229,6 @@ namespace ICSLicenseMaintV2.Controllers
             }
 
             this.AddAlert(AlertModel.Success(string.Format("Assigned to <b>{0}</b>", model.CustomerName)));
-            return RedirectToAction("Edit", new { id = model.LicenseID });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AssignToNewSite(NewSiteModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var license = db.Licenses.Single(l => l.LicenseID == model.LicenseID);
-
-                var customerSite = db.CustomerSites.SingleOrDefault(cs => cs.CustomerID == license.CustomerID && cs.SiteID == model.SiteID);
-                if (customerSite == null)
-                {
-                    customerSite = new CustomerSite
-                    {
-                        CustomerID = license.CustomerID,
-                        SiteID = model.SiteID.ToUpper(),
-                        SiteDescription = model.SiteDescription,
-                        SiteName = model.SiteName
-                    };
-                    db.CustomerSites.Add(customerSite);
-                }
-                model.SiteID = customerSite.SiteID;
-                license.SiteID = model.SiteID;
-
-                db.SaveChanges();
-            }
-
-            this.AddAlert(AlertModel.Success(string.Format("Created site <b>{0}</b> and assigned to <b>{1}</b>", model.SiteName, model.LicenseID)));
             return RedirectToAction("Edit", new { id = model.LicenseID });
         }
 

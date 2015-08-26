@@ -20,12 +20,12 @@ namespace ICSLicenseMaintV2.ViewModels
         [StringLength(50)]
         [DisplayName("Customer Name")]
         public string CustomerName { get; set; }
-        [Required]
-        [StringLength(10)]
+        //[Required]
+        //[StringLength(10)]
         [DisplayName("Site ID")]
         public string SiteID { get; set; }
-        [Required]
-        [StringLength(50)]
+        //[Required]
+        //[StringLength(50)]
         [DisplayName("Site Name")]
         public string SiteName { get; set; }
         [DisplayName("Site Description")]

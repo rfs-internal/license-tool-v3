@@ -33,7 +33,7 @@ namespace ICSLicenseMaintV2.Controllers
                 TotalUserCount = l.TotalUserCount,
                 MachineName = l.MachineName,
                 MachineID = l.MachineID,
-                CustomerName = l.CustomerSite.Customer.CustomerName,
+                CustomerName = (l.CustomerSite ?? new CustomerSite { Customer = new Customer { CustomerName = "?" } }).Customer.CustomerName,
                 LicenseID = l.LicenseID,
                 IsExpired = l.IsExpired,
                 InstallPath = l.InstallPath,
@@ -47,9 +47,10 @@ namespace ICSLicenseMaintV2.Controllers
         }
 
         // GET: LicenseSearch
-        public ActionResult Search(string searchText)
+        public ActionResult Index(string searchText)
         {
-            return View();
+            var last10Demos = db.Licenses.Where(l => l.CustomerID == "DEMO").OrderByDescending(l => l.LastRequestedUpdate).Take(10);
+            return View(last10Demos);
         }
 
         protected override void Dispose(bool disposing)

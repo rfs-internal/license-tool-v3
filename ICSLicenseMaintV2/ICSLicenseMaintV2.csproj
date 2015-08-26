@@ -135,7 +135,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\CustomerSitesController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\LicensesController.cs" />
     <Compile Include="Controllers\LicenseSearchController.cs" />
@@ -165,7 +164,6 @@
     <Compile Include="ViewModels\CustomerSiteInfo.cs" />
     <Compile Include="ViewModels\LicenseModuleEditModel.cs" />
     <Compile Include="ViewModels\LicenseEditModel.cs" />
-    <Compile Include="ViewModels\NewSiteModel.cs" />
     <Compile Include="ViewModels\NewCustomerAndSiteModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,10 +207,6 @@
     <Content Include="Views\Customers\Create.cshtml" />
     <Content Include="Views\Customers\Edit.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
-    <Content Include="Views\CustomerSites\Create.cshtml" />
-    <Content Include="Views\CustomerSites\Delete.cshtml" />
-    <Content Include="Views\CustomerSites\Edit.cshtml" />
-    <Content Include="Views\CustomerSites\Index.cshtml" />
     <Content Include="Views\Licenses\Delete.cshtml" />
     <Content Include="Views\Licenses\Edit.cshtml" />
     <Content Include="Views\Licenses\Index.cshtml" />
@@ -221,16 +215,12 @@
     <Content Include="Views\Error\NotAuthorized.cshtml" />
     <Content Include="Views\Error\Oops.cshtml" />
     <Content Include="Views\Shared\NewCustomerAndSite.cshtml" />
-    <Content Include="Views\Shared\NewSite.cshtml" />
     <Content Include="Views\Licenses\_LicenseHeader.cshtml" />
     <Content Include="Views\Licenses\_NewCustomerAndSiteModal.cshtml" />
-    <Content Include="Views\Licenses\_NewSiteModal.cshtml" />
     <Content Include="Views\Licenses\_LicenseDetail.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
-    <Content Include="Views\Shared\_SearchModal.cshtml" />
-    <Content Include="Views\LicenseSearch\Search.cshtml" />
+    <Content Include="Views\LicenseSearch\Index.cshtml" />
     <Content Include="Views\Shared\_LicenseList.cshtml" />
-    <Content Include="Views\Licenses\All.cshtml" />
     <None Include="Web.Release-Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

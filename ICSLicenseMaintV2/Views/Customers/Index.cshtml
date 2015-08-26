@@ -15,7 +15,6 @@
         <tr>
             <th></th>
             <th>Name</th>
-            <th>Sites</th>
             <th>Licenses</th>
         </tr>
     </thead>
@@ -26,17 +25,14 @@
             <tr>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.CustomerID }) |
-                    @Html.ActionLink("Sites", "Index", "CustomerSites", new { id = item.CustomerID }, new { })
+                    @Html.ActionLink("Licenses", "Index", "Licenses", new { id = item.CustomerID }, new { })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CustomerName)
                     <span style="display:none">@item.CustomerID</span>
                 </td>
                 <td>
-                    <a href="@Url.Action("Index", "CustomerSites", new { id=item.CustomerID })">@item.SiteCount</a>
-                </td>
-                <td>
-                    <a href="@Url.Action("Index", "Licenses", new { customerId=item.CustomerID })">@item.LicenseCount</a>
+                    <a href="@Url.Action("Index", "Licenses", new { id = item.CustomerID })">@item.LicenseCount</a>
                 </td>
             </tr>
         }

@@ -7,14 +7,7 @@
     @Html.AntiForgeryToken()
     <div id="licenseDetail" class="form-horizontal">
         <div class="form-group">
-            <label class="control-label col-md-2" for="Module">Add Module:</label>
-            <div class="col-md-4">
-                <select data-bind="options: modules, value: module, optionsText: 'name'" class="form-control"></select>
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-success" type="button" data-bind="click: addModule">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Module
-                </button>
+            <div class="pull-right">
                 <button class="btn btn-success" data-toggle="modal" data-target="#addModulesModal" type="button">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Modules
                 </button>

@@ -9,39 +9,15 @@
         function HeaderViewModel() {
             var self = this;
             self.customer = ko.observable();
-            self.site = ko.observable();
-
             self.customers = [];
-            self.sites = [];
-            self.customersites = ko.observableArray([]);
-
-            self.init = function(customerid, siteid){
-                self.customer(customerid);
-                self.updateCustomerSites(customerid);
-                self.site(siteid);
-                self.customer.subscribe(self.updateCustomerSites);
-            };
-
-            self.updateCustomerSites = function(customerid){
-                var customersites = self.sites.filter(function (s) { return s.customerid == customerid });
-                self.customersites(customersites);
-            }
         }
 
         function DetailViewModel() {
             var self = this;
             self.modules = [];
-            self.module = {};
             self.licensedModules = ko.observableArray();
 
             self.filter = ko.observable('');
-
-            self.addModule = function () {
-                var modules = self.licensedModules();
-                modules.push(self.module);
-                modules = modules.sort(function (l, r) { return l.name < r.name ? -1 : 1; });
-                self.licensedModules(modules);
-            }
 
             self.removeModule = function(module){
                 self.licensedModules.remove(module);
@@ -77,13 +53,10 @@
 
         $(document).ready(function () {
             $.get('/Customers/All', undefined, function(customers){
-                $.get('/CustomerSites/All', undefined, function (sites) {
-                    var viewModel = new HeaderViewModel();
-                    viewModel.customers = customers;
-                    viewModel.sites = sites;
-                    viewModel.init('@Html.Raw(Model.CustomerID)', '@Html.Raw(Model.SiteID)');
-                    ko.applyBindings(viewModel, document.getElementById('licenseHeader'));
-                });
+                var viewModel = new HeaderViewModel();
+                viewModel.customers = customers;
+                viewModel.customer('@Html.Raw(Model.CustomerID)');
+                ko.applyBindings(viewModel, document.getElementById('licenseHeader'));
             });
 
             $.get('/Licenses/Modules', { id: '@Html.Raw(Model.LicenseID)' }, function(data){
@@ -102,7 +75,7 @@
                 viewModel.licensedModules(data.licensedModules);
                 ko.applyBindings(viewModel, document.getElementById('licenseDetail'));
             });
-            
+
         });
     </script>
 
@@ -111,9 +84,7 @@
 
 <h2>License</h2>
 <h3>
-    <a href="@Url.Action("Index", "Licenses", new { customerId = Model.CustomerID })">@Model.CustomerSite.Customer.CustomerName</a>
-    <span> \ </span>
-    <a href="@Url.Action("Index", "Licenses", new { customerId = Model.CustomerID, siteId = Model.SiteID })">@Model.CustomerSite.SiteName</a>
+    <a href="@Url.Action("Index", "Licenses", new { id = Model.CustomerID })">@Model.CustomerSite.Customer.CustomerName</a>
 </h3>
 
 <ul class="nav nav-tabs">
@@ -136,5 +107,3 @@
 
 
 @Html.Partial("_NewCustomerAndSiteModal")
-
-@Html.Partial("_NewSiteModal")
