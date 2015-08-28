@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://icsfl.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://icsfl.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://icsfl.com/">
+      <s:element name="GetNewLicense">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RequestData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewLicenseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetNewLicenseResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResponseData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUpdatedLicense">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RequestData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUpdatedLicenseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetUpdatedLicenseResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResponseData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewLicFromCrypKeyData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RequestData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewLicFromCrypKeyDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetNewLicFromCrypKeyDataResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResponseData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetNewLicenseSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNewLicense" />
+  </wsdl:message>
+  <wsdl:message name="GetNewLicenseSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNewLicenseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUpdatedLicenseSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUpdatedLicense" />
+  </wsdl:message>
+  <wsdl:message name="GetUpdatedLicenseSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUpdatedLicenseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNewLicFromCrypKeyDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNewLicFromCrypKeyData" />
+  </wsdl:message>
+  <wsdl:message name="GetNewLicFromCrypKeyDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNewLicFromCrypKeyDataResponse" />
+  </wsdl:message>
+  <wsdl:portType name="RFSLicenseSoap">
+    <wsdl:operation name="GetNewLicense">
+      <wsdl:input message="tns:GetNewLicenseSoapIn" />
+      <wsdl:output message="tns:GetNewLicenseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUpdatedLicense">
+      <wsdl:input message="tns:GetUpdatedLicenseSoapIn" />
+      <wsdl:output message="tns:GetUpdatedLicenseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNewLicFromCrypKeyData">
+      <wsdl:input message="tns:GetNewLicFromCrypKeyDataSoapIn" />
+      <wsdl:output message="tns:GetNewLicFromCrypKeyDataSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RFSLicenseSoap" type="tns:RFSLicenseSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetNewLicense">
+      <soap:operation soapAction="http://icsfl.com/GetNewLicense" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUpdatedLicense">
+      <soap:operation soapAction="http://icsfl.com/GetUpdatedLicense" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNewLicFromCrypKeyData">
+      <soap:operation soapAction="http://icsfl.com/GetNewLicFromCrypKeyData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="RFSLicenseSoap12" type="tns:RFSLicenseSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetNewLicense">
+      <soap12:operation soapAction="http://icsfl.com/GetNewLicense" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUpdatedLicense">
+      <soap12:operation soapAction="http://icsfl.com/GetUpdatedLicense" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNewLicFromCrypKeyData">
+      <soap12:operation soapAction="http://icsfl.com/GetNewLicFromCrypKeyData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RFSLicense">
+    <wsdl:port name="RFSLicenseSoap" binding="tns:RFSLicenseSoap">
+      <soap:address location="http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx" />
+    </wsdl:port>
+    <wsdl:port name="RFSLicenseSoap12" binding="tns:RFSLicenseSoap12">
+      <soap12:address location="http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

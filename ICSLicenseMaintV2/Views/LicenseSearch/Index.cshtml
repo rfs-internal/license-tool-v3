@@ -93,6 +93,7 @@
             <th></th>
             <th>ID</th>
             <th>Customer</th>
+            <th>Machine ID</th>
             <th>Machine Name</th>
             <th>Users</th>
             <th>Permanent</th>
@@ -108,7 +109,10 @@
             </td>
             <td data-bind="text: LicenseID"></td>
             @*<td data-bind="attr: { title: MachineID }, text: ShortMachineID"></td>*@
-            <td data-bind="text: CustomerName"></td>
+            <td>
+                <a data-bind="attr: { href: '/Licenses/Index/' + CustomerID}, text: CustomerName"></a>
+            </td>
+            <td data-bind="text: MachineID"></td>
             <td data-bind="text: MachineName"></td>
             <td data-bind="text: TotalUserCount"></td>
             <td>

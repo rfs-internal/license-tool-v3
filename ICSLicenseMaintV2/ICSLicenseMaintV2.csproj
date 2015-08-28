@@ -139,8 +139,14 @@
     <Compile Include="Controllers\LicensesController.cs" />
     <Compile Include="Controllers\LicenseSearchController.cs" />
     <Compile Include="Controllers\ProductModulesController.cs" />
+    <Compile Include="Controllers\ProxyRequestController.cs" />
     <Compile Include="LicenseWebViewPage.cs" />
     <Compile Include="Models\DbContextFactory.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="RequestDurationLoggerModule.cs" />
     <Compile Include="Utils\LinqExtensions.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -165,9 +171,15 @@
     <Compile Include="ViewModels\LicenseModuleEditModel.cs" />
     <Compile Include="ViewModels\LicenseEditModel.cs" />
     <Compile Include="ViewModels\NewCustomerAndSiteModel.cs" />
+    <Compile Include="Web References\ICSLicensing\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\403.jpg" />
+    <Content Include="Content\404.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\favicon.ico" />
@@ -180,6 +192,10 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="log4net.config" />
     <None Include="Properties\PublishProfiles\RFS5-HELP-TEST.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -193,7 +209,10 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <None Include="Web References\ICSLicensing\ICSLicensing.disco" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -221,6 +240,12 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\LicenseSearch\Index.cshtml" />
     <Content Include="Views\Shared\_LicenseList.cshtml" />
+    <Content Include="Views\ProxyRequest\Index.cshtml" />
+    <None Include="Web References\ICSLicensing\ICSLicensing.wsdl" />
+    <Content Include="Web References\ICSLicensing\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <None Include="Web.Release-Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -238,6 +263,22 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ICSLicensing\</RelPath>
+      <UpdateFromURL>http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>ICSLicenseMaintV2_ICSLicensing_RFSLicense</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

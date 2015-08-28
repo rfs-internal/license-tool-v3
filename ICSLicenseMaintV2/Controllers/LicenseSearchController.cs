@@ -27,12 +27,13 @@ namespace ICSLicenseMaintV2.Controllers
                 l.CustomerSite.SiteName.Contains(part));
             }
 
-            var results = licenses.OrderByDescending(l=>l.LicenseID).Skip(LIMIT * page).Take(LIMIT).ToList().Select(l => new
+            var results = licenses.OrderByDescending(l => l.LicenseID).Skip(LIMIT * page).Take(LIMIT).ToList().Select(l => new
             {
                 IsPermanent = l.IsPermanent,
                 TotalUserCount = l.TotalUserCount,
                 MachineName = l.MachineName,
-                MachineID = l.MachineID,
+                MachineID = l.ShortMachineID,
+                CustomerID = l.CustomerID,
                 CustomerName = (l.CustomerSite ?? new CustomerSite { Customer = new Customer { CustomerName = "?" } }).Customer.CustomerName,
                 LicenseID = l.LicenseID,
                 IsExpired = l.IsExpired,
@@ -49,7 +50,7 @@ namespace ICSLicenseMaintV2.Controllers
         // GET: LicenseSearch
         public ActionResult Index(string searchText)
         {
-            var last10Demos = db.Licenses.Where(l => l.CustomerID == "DEMO").OrderByDescending(l => l.LastRequestedUpdate).Take(10);
+            var last10Demos = db.Licenses.Where(l => l.CustomerID == "DEMO").OrderByDescending(l => l.LicenseID).Take(10);
             return View(last10Demos);
         }
 

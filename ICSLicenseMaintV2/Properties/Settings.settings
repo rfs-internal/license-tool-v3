@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ICSLicenseMaintV2.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ICSLicenseMaintV2_ICSLicensing_RFSLicense" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
