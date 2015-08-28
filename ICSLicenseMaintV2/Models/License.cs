@@ -59,6 +59,18 @@ namespace ICSLicenseMaintV2
         [DisplayName("Last Requested Update")]
         public DateTime LastRequestedUpdate { get; set; }
 
+        // BEGIN ADD FIELDS FROM VIEW
+        [DisplayName("Last Changed By")]
+        public string ChangeUserID { get; set; }
+
+        [DisplayName("Last Changed Type")]
+        public char ChangeType { get; set; }
+
+        [DisplayName("Last Changed Time")]
+        public DateTime ChangeTime { get; set; }
+        // END ADD FIELDS FROM VIEW
+
+
         public virtual CustomerSite CustomerSite { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

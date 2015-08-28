@@ -24,6 +24,8 @@ namespace ICSLicenseMaintV2
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<License>().ToTable("ViewLicenseWithChangeInfo", "dbo");
+
             modelBuilder.Entity<CustomerSite>()
                 .Property(e => e.SiteDescription)
                 .IsUnicode(false);
