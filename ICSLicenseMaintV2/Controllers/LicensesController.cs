@@ -181,10 +181,13 @@ namespace ICSLicenseMaintV2.Controllers
             var customerId = license.CustomerID;
             var siteId = license.SiteID;
 
-            db.Licenses.Remove(license);
-            db.SaveChanges();
+            db.Database.ExecuteSqlCommand("DELETE FROM Licenses WHERE LicenseID = {0}", id);
+
+            // This doesn't work since db.Licenses is a view:
+            //db.Licenses.Remove(license);
+            //db.SaveChanges();
             this.AddAlert(AlertModel.Success(string.Format("License <b>{0}</b> deleted", license.LicenseID)));
-            return RedirectToAction("Index", new { customerId = customerId, siteId = siteId });
+            return RedirectToAction("Index", new { id = customerId });
         }
 
         [HttpPost]
