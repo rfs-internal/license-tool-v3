@@ -15,7 +15,7 @@
         <tr>
             <th></th>
             <th>Name</th>
-            <th>Licenses</th>
+            <th class="hidden-xs">Licenses</thclass="hidden-xs">
         </tr>
     </thead>
     
@@ -31,7 +31,7 @@
                     @Html.DisplayFor(modelItem => item.CustomerName)
                     <span style="display:none">@item.CustomerID</span>
                 </td>
-                <td>
+                <td class="hidden-xs">
                     <a href="@Url.Action("Index", "Licenses", new { id = item.CustomerID })">@item.LicenseCount</a>
                 </td>
             </tr>

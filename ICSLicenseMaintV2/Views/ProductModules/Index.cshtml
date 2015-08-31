@@ -10,9 +10,9 @@
     <thead>
         <tr>
             <th></th>
-            <th>Product</th>
+            <th class="hidden-xs">Product</thclass="hidden-xs">
             <th>Module Name</th>
-            <th>Include In Demo</th>
+            <th class="hidden-xs">Include In Demo</th>
         </tr>
     </thead>
 
@@ -21,13 +21,13 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.ModuleID })
         </td>
-        <td>
+        <td class="hidden-xs">
             @Html.DisplayFor(modelItem => item.Product.ProductName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ModuleName)
         </td>
-        <td>
+        <td class="hidden-xs">
             <input type="checkbox" disabled="disabled" @(item.IncludeInDemo == true ? "checked=\"\"" : "")/>
         </td>
     </tr>

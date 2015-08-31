@@ -4,13 +4,13 @@
     <thead>
         <tr>
             <th></th>
-            <th>ID</th>
-            <th>Machine ID</th>
+            <th class="hidden-xs">ID</th>
+            <th class="hidden-xs">Machine ID</th>
             <th>Machine Name</th>
-            <th>Users</th>
-            <th>Permanent</th>
-            <th>Expires</th>
-            <th>Last Request</th>
+            <th class="hidden-xs">Users</th>
+            <th class="hidden-xs">Permanent</th>
+            <th class="hidden-xs">Expires</th>
+            <th class="hidden-xs">Last Request</th>
         </tr>
     </thead>
     <tbody>
@@ -21,24 +21,24 @@
                     @Html.ActionLink("Edit", "Edit", new { id = item.LicenseID, controller="Licenses" }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.LicenseID, controller = "Licenses" })
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.LicenseID)
                 </td>
-                <td title="@item.MachineID">
+                <td title="@item.MachineID" class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.ShortMachineID)
                     <span style="display:none">@item.MachineID</span>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MachineName)
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.TotalUserCount)
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.IsPermanent)
                 </td>
-                <td>@(item.IsPermanent ? "-" : item.ExpiryDate.ToShortDateString())</td>
-                <td>@item.LastRequestedUpdate.ToShortDateString()</td>
+                <td class="hidden-xs">@(item.IsPermanent ? "-" : item.ExpiryDate.ToShortDateString())</td>
+                <td class="hidden-xs">@item.LastRequestedUpdate.ToShortDateString()</td>
             </tr>
         }
     </tbody>

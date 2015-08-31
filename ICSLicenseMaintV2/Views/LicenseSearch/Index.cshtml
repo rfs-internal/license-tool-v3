@@ -91,14 +91,14 @@
     <thead>
         <tr>
             <th></th>
-            <th>ID</th>
-            <th>Customer</th>
-            <th>Machine ID</th>
+            <th class="hidden-xs">ID</thclass="hidden-xs">
+            <th class="hidden-xs">Customer</th>
+            <th class="hidden-xs">Machine ID</th>
             <th>Machine Name</th>
-            <th>Users</th>
-            <th>Permanent</th>
-            <th>Expires</th>
-            <th>Last Request</th>
+            <th class="hidden-xs">Users</th>
+            <th class="hidden-xs">Permanent</th>
+            <th class="hidden-xs">Expires</th>
+            <th class="hidden-xs">Last Request</th>
         </tr>
     </thead>
     <tbody data-bind="foreach: licenses">
@@ -107,24 +107,24 @@
                 <a data-bind="attr: { href: '/Licenses/Edit/'+LicenseID }">Edit</a> |
                 <a data-bind="attr: { href: '/Licenses/Delete/'+LicenseID }">Delete</a>
             </td>
-            <td data-bind="text: LicenseID"></td>
+            <td data-bind="text: LicenseID" class="hidden-xs"></td>
             @*<td data-bind="attr: { title: MachineID }, text: ShortMachineID"></td>*@
-            <td>
+            <td class="hidden-xs">
                 <a data-bind="attr: { href: '/Licenses/Index/' + CustomerID}, text: CustomerName"></a>
             </td>
-            <td data-bind="text: MachineID"></td>
+            <td data-bind="text: MachineID" class="hidden-xs"></td>
             <td data-bind="text: MachineName"></td>
-            <td data-bind="text: TotalUserCount"></td>
-            <td>
+            <td data-bind="text: TotalUserCount" class="hidden-xs"></td>
+            <td class="hidden-xs">
                 <input type="checkbox" disabled readonly data-bind="checked: IsPermanent"/>
             </td>
-            <td>
+            <td class="hidden-xs">
                 <span data-bind="if: IsPermanent">-</span>
                 <!-- ko if: !IsPermanent-->
                 <span data-bind="text: ExpiryDate"></span>
                 <!-- /ko -->
             </td>
-            <td data-bind="text: LastRequestedUpdate"></td>
+            <td data-bind="text: LastRequestedUpdate" class="hidden-xs"></td>
         </tr>
     </tbody>
 </table>
