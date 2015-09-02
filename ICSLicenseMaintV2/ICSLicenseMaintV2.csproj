@@ -148,6 +148,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RequestDurationLoggerModule.cs" />
+    <Compile Include="Utils\LicenseUtil.cs" />
     <Compile Include="Utils\LinqExtensions.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerSite.cs" />

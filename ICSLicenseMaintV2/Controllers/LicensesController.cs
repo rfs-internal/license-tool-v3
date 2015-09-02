@@ -1,10 +1,12 @@
-﻿using ICSLicenseMaintV2.ViewModels;
+﻿using ICSLicenseMaintV2.Utils;
+using ICSLicenseMaintV2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Mvc;
 
 namespace ICSLicenseMaintV2.Controllers
@@ -69,7 +71,7 @@ namespace ICSLicenseMaintV2.Controllers
             {
                 edit.CustomerID = edit.CustomerID.ToUpper();
                 // They changed customers, set a new CustomerSite
-                var customerSite = db.CustomerSites.FirstOrDefault(s => s.CustomerID == edit.CustomerID);
+                var customerSite = db.CustomerSites.FirstOrDefault(s => s.CustomerID == edit.CustomerID && s.SiteID == edit.CustomerID);
                 if (customerSite == null)
                 {
                     // This customer doesn't have any customer sites, create one:
@@ -96,6 +98,8 @@ namespace ICSLicenseMaintV2.Controllers
                 var diff = (DateTime.UtcNow.AddDays(edit.AddDays) - license.DateIssued).TotalDays;
                 license.DaysRemaining = (int)Math.Ceiling(diff);
             }
+            license.TotalUserCount = edit.UserCount;
+
             db.SaveChanges();
 
             this.AddAlert(AlertModel.Success(string.Format("License <b>{0}</b> updated", license.LicenseID)));
@@ -210,7 +214,7 @@ namespace ICSLicenseMaintV2.Controllers
                 }
                 model.CustomerID = customer.CustomerID;
 
-                var customerSite = db.CustomerSites.FirstOrDefault(cs => cs.CustomerID == model.CustomerID);
+                var customerSite = db.CustomerSites.FirstOrDefault(cs => cs.CustomerID == model.CustomerID && cs.SiteID == model.CustomerID);
                 if (customerSite == null)
                 {
                     customerSite = new CustomerSite
@@ -233,6 +237,21 @@ namespace ICSLicenseMaintV2.Controllers
 
             this.AddAlert(AlertModel.Success(string.Format("Assigned to <b>{0}</b>", model.CustomerName)));
             return RedirectToAction("Edit", new { id = model.LicenseID });
+        }
+
+        public ActionResult DownloadLicenseFile(int id)
+        {
+            var productid = db.Licenses.Where(l => l.LicenseID == id).Select(l => l.ProductID).Single();
+            string responseData;
+            string errorMessage;
+            if(new LicenseUtil().GetCurrentLicense(id, out responseData, out errorMessage))
+            {
+                var cd = new System.Net.Mime.ContentDisposition { FileName = productid + ".txt", Inline = false };
+                Response.AppendHeader("Content-Disposition", cd.ToString());
+                return File(Encoding.UTF8.GetBytes(responseData), "text");
+            }
+            this.AddAlert(AlertModel.Error(errorMessage));
+            return RedirectToAction("Edit", new { id = id });
         }
 
         protected override void Dispose(bool disposing)

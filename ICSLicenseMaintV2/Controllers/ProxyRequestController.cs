@@ -1,11 +1,7 @@
 ﻿using ICSLicenseMaintV2.ICSLicensing;
+using ICSLicenseMaintV2.Utils;
 using ICSLicenseMaintV2.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ICSLicenseMaintV2.Controllers
@@ -18,7 +14,7 @@ namespace ICSLicenseMaintV2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(string licenseurl, string action)
+        public ActionResult Upload(string licenseurl)
         {
             if(Request.Files.Count > 0)
             {
@@ -34,20 +30,16 @@ namespace ICSLicenseMaintV2.Controllers
                 using (RFSLicense rfsLicense = new RFSLicense() { Url = licenseurl })
                 {
                     bool updatedLicense = false;
-                    if(action.IndexOf("update", StringComparison.CurrentCultureIgnoreCase) >= 0)
-                    {
-                        updatedLicense = rfsLicense.GetUpdatedLicense(requestString, out responseString, out errorMessage);
-                    }
-                    else // "demo"
-                    {
-                        updatedLicense = rfsLicense.GetNewLicense(requestString, out responseString, out errorMessage);
-                    }
+                    updatedLicense = rfsLicense.GetNewLicense(requestString, out responseString, out errorMessage);
                     
                     if (updatedLicense)
                     {
-                        var cd = new System.Net.Mime.ContentDisposition { FileName = "weblicense.txt", Inline = false };
-                        Response.AppendHeader("Content-Disposition", cd.ToString());
-                        return File(Encoding.UTF8.GetBytes(responseString), "text");
+                        this.AddAlert(AlertModel.Success("Demo license created. Make your changes to the license, save, then click the <b>Download License File</b> button below."));
+                        var licenseId = new LicenseUtil().GetLicenseIdFromResult(responseString);
+                        return RedirectToAction("Edit", "Licenses", new { id = licenseId });
+                        //var cd = new System.Net.Mime.ContentDisposition { FileName = "weblicense.txt", Inline = false };
+                        //Response.AppendHeader("Content-Disposition", cd.ToString());
+                        //return File(Encoding.UTF8.GetBytes(responseString), "text");
                     }
                     else
                     {

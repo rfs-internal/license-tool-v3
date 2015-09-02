@@ -61,11 +61,11 @@
             <div class="col-md-10">
                 @if (IsAuthorized)
                 {
-                    <input type="checkbox" @(Model.IsPermanent ? "checked=\"\"" : "") />
+                    @Html.EditorFor(m=>m.IsPermanent)
                 }
                 else
                 {
-                    <input type="checkbox" @(Model.IsPermanent ? "checked=\"\"" : "") disabled />
+                    <input type="checkbox" @(Model.IsPermanent ? "checked=\"\"" : "") disabled  name="IsPermanent"/>
                 }
             </div>
         </div>
@@ -113,7 +113,11 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10  col-xs-12">
-                <input type="submit" value="Save Header" class="btn btn-primary pull-right" />
+                <div class="pull-right">
+                    <a href="@Url.Action("Delete", new { id = Model.LicenseID })" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <span class="hidden-xs">Delete</span></a>
+                    <a href="@Url.Action("DownloadLicenseFile", new { id = Model.LicenseID })" class="btn btn-primary"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> <span class="hidden-xs">Download License File</span></a>
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> Save Header</button>
+                </div>
             </div>
         </div>
     </div>
