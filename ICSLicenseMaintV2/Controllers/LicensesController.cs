@@ -74,7 +74,7 @@ namespace ICSLicenseMaintV2.Controllers
                 var customerSite = db.CustomerSites.FirstOrDefault(s => s.CustomerID == edit.CustomerID && s.SiteID == edit.CustomerID);
                 if (customerSite == null)
                 {
-                    var customerName = db.Customers.Where(c => c.CustomerID == c.CustomerID).Select(c => c.CustomerName).Single();
+                    var customerName = db.Customers.Where(c => c.CustomerID == edit.CustomerID).Select(c => c.CustomerName).Single();
                     // This customer doesn't have any customer sites, create one:
                     customerSite = new CustomerSite
                     {
