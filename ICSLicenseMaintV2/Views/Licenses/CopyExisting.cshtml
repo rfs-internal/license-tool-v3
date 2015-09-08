@@ -1,0 +1,48 @@
+﻿@model ICSLicenseMaintV2.License
+
+@{
+    ViewBag.Title = "Copy Existing License";
+}
+
+<h2>Copy Existing</h2>
+
+<div class="alert alert-warning" role="alert">
+    <ul>
+        <li>This will copy the Customer, User Count, Expiration Date, and Modules from the entered <i>Source License</i> to the <i>Target License</i>. </li>
+        <li>Existing modules on the <i>Target License</i> will be removed.</li>
+        @if (ViewBag.SourceLicenseId != null)
+        {
+            <li>An existing license was found with a matching Machine Name, it was defaulted below.</li>
+        }
+    </ul>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2 col-xs-12">Target License:</label>
+            <div class="col-md-4 col-xs-9">
+                @Model.LicenseID
+                <input type="hidden" name="targetLicense" value="@Model.LicenseID"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2 col-xs-12" for="sourceLicense">Source License:</label>
+            <div class="col-md-4 col-xs-9">
+                <input type="number" class="form-control" name="sourceLicense" value="@ViewBag.SourceLicenseId" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="sourceLicense" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10  col-xs-12">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

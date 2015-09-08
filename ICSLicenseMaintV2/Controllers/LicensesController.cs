@@ -108,10 +108,75 @@ namespace ICSLicenseMaintV2.Controllers
             return RedirectToAction("Edit", new { id = license.LicenseID });
         }
 
+        public ActionResult CopyExisting(int id)
+        {
+            var license = db.Licenses.Single(l => l.LicenseID == id);
+
+            ViewBag.SourceLicenseId = db.Licenses.Where(l => l.MachineName == license.MachineName && l.LicenseID != id)
+                .OrderByDescending(l => l.ChangeTime)
+                .Select(l=>l.LicenseID.ToString())
+                .FirstOrDefault();
+
+            return View(license);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CopyExisting(int targetLicense, int sourceLicense)
+        {
+            License target = null, source = null;
+            if(targetLicense == sourceLicense)
+            {
+                this.AddAlert(AlertModel.Error("<i>Target License</i> and <i>Source License</i> must be different."));
+                return RedirectToAction("CopyExisting", new { id = targetLicense });
+            }
+
+            try
+            {
+                target = db.Licenses.Single(l => l.LicenseID == targetLicense);
+                source = db.Licenses.Single(l => l.LicenseID == sourceLicense);
+            }
+            catch(Exception ex)
+            {
+                this.AddAlert(AlertModel.Error(string.Format("No license found with id: <b>{0}</b>", sourceLicense)));
+                return RedirectToAction("CopyExisting", new { id = target.LicenseID });
+            }
+            
+
+            target.CustomerID = source.CustomerID;
+            target.SiteID = source.SiteID;
+            target.TimeOut = source.TimeOut;
+            target.TotalUserCount = source.TotalUserCount;
+            var expiryDate = source.ExpiryDate > target.ExpiryDate ? source.ExpiryDate : target.ExpiryDate;
+            target.DaysRemaining = Math.Max(0, (int)(expiryDate - target.DateIssued).TotalDays);
+
+            db.LicensedModules.RemoveRange(target.LicensedModules);
+            target.LicensedModules.Clear();
+            db.LicensedModules.AddRange(source.LicensedModules.Select(m => new LicensedModule
+            {
+                DateIssued = DateTime.UtcNow,
+                DaysRemaining = target.DaysRemaining,
+                LastRequestedUpdate = target.LastRequestedUpdate,
+                LicenseID = target.LicenseID,
+                ModuleID = m.ModuleID,
+                ProductID = m.ProductID,
+                TimeOut = m.TimeOut,
+                UserCount = m.UserCount
+            }));
+
+            if (this.TryAndHandleErrorWithAlert(() => db.SaveChanges()))
+            {
+                return RedirectToAction("Edit", new { id = target.LicenseID });
+            }
+            return RedirectToAction("CopyExisting", new { id = target.LicenseID });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditModules(LicenseModulesEditModel edit)
         {
+            edit.Modules = edit.Modules ?? new string[0];
+
             var license = db.Licenses.Find(edit.LicenseID);
             var licenseModules = license.LicensedModules.ToList();
             var newModuleSet = edit.Modules.ToDictionary(k => k, v => true, StringComparer.CurrentCultureIgnoreCase);

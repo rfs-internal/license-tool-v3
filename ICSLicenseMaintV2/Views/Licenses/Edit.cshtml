@@ -87,6 +87,8 @@
     <a href="@Url.Action("Index", "Licenses", new { id = Model.CustomerID })">@Model.CustomerSite.Customer.CustomerName</a>
 </h3>
 
+<a href="@Url.Action("CopyExisting", new { id = Model.LicenseID })" class="btn btn-default pull-right">Copy Existing License</a>
+
 <ul class="nav nav-tabs">
     <li role="presentation" class="active">
         <a href="#tab_license" aria-controls="tab_license" data-toggle="tab">License</a>
