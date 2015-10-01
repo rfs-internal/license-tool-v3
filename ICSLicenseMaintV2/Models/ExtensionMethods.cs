@@ -60,7 +60,8 @@ namespace ICSLicenseMaintV2
             {
                 // replace space, backslash, dot, and dash with space
                 var path = System.Text.RegularExpressions.Regex.Replace(InstallPath ?? string.Empty, @"\s|\\|\.|-", "").ToLower();
-                return path.Contains("rfsmart4") || path.Contains("rfsmart5") ? RfsmartVersion.V4 : RfsmartVersion.V3;
+                //return path.Contains("rfsmart4") || path.Contains("rfsmart5") ? RfsmartVersion.V4 : RfsmartVersion.V3;
+                return path.Contains("programfiles") ? RfsmartVersion.V4 : RfsmartVersion.V3;
             }
         }
     }

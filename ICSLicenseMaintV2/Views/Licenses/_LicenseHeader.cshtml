@@ -83,6 +83,7 @@
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.ChangeUserID)
                 @Html.HiddenFor(model => model.ChangeTime)
+                @Html.HiddenFor(model => model.LastRequestedUpdate)
                 <p class="form-control-static">@Html.Raw(Model.ChangeTime) (@Html.Raw(Model.ChangeUserID))</p>
             </div>
         </div>
@@ -92,15 +93,6 @@
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.DateIssued)
                 <p class="form-control-static">@Html.Raw(Model.DateIssued)</p>
-            </div>
-        </div>
-
-        <div class="form-group compressed">
-            @Html.LabelFor(model => model.ChangeTime, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
-            <div class="col-md-10">
-                @Html.HiddenFor(model => model.ChangeTime)
-                @Html.HiddenFor(model => model.LastRequestedUpdate)
-                <p class="form-control-static">@Html.Raw(Model.ChangeTime)</p>
             </div>
         </div>
 
