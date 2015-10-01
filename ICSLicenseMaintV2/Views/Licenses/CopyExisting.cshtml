@@ -29,8 +29,68 @@
         <div class="form-group">
             <label class="control-label col-md-2 col-xs-12" for="sourceLicense">Source License:</label>
             <div class="col-md-4 col-xs-9">
-                <input type="number" class="form-control" name="sourceLicense" value="@ViewBag.SourceLicenseId" />
+                <input type="number" class="form-control" name="sourceLicense" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']" />
                 <span class="field-validation-valid text-danger" data-valmsg-for="sourceLicense" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Site Name:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: SiteName"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Customer Name:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: CustomerName"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Machine ID:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: MachineID"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Install Path:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: InstallPath"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Machine Name:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: MachineName"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">User Count:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: TotalUserCount"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Is Permanent:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: IsPermanent"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Date Issued:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: DateIssued"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12" for="siteName">Expiration Date:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: ExpiryDate"></p>
+            </div>
+        </div>
+        <div class="form-group compressed">
+            <label class="control-label col-md-2 col-xs-12">Last Changed:</label>
+            <div class="col-md-10 col-xs-9" data-bind="with: license">
+                <p class="form-control-static" data-bind="text: ChangeTime"></p>
             </div>
         </div>
         <div class="form-group">
@@ -42,5 +102,42 @@
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+<script>
+    function LicenseViewModel() {
+        var self = this;
+        self.searchText = ko.observable('@ViewBag.SourceLicenseId');
+        self.loading = ko.observable(false);
+        self.license = ko.observable();
+
+        $(document)
+            .ajaxStart(function () { self.loading(true); })
+            .ajaxStop(function () { self.loading(false); });
+
+        self.delayedValue = ko.pureComputed(this.searchText)
+            .extend({ rateLimit: { method: "notifyWhenChangesStop", timeout: 400 } });
+
+        self.delayedValue.subscribe(updateLicense, self);
+
+        updateLicense(self.searchText());
+
+        function updateLicense(val) {
+            if (self.request) {
+                self.request.abort();
+            }
+            self.license(undefined);
+            self.request = $.post('/Licenses/Lookup', { id: val }, function (data) {
+                self.license(data);
+                self.request = undefined;
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        ko.applyBindings(new LicenseViewModel());
+    });
+</script>
 }
 

@@ -76,6 +76,9 @@
             $('.nav-tabs a').on('shown.bs.tab', function (e) {
                 window.location.hash = e.target.hash.replace("#", "#" + prefix);
             });
+
+            // Enable bootstrap tooltips:
+            $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
         })
     </script>
 </body>

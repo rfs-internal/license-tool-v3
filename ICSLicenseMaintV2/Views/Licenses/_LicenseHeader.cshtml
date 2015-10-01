@@ -13,7 +13,7 @@
         @Html.HiddenFor(model => model.DaysRemaining)
 
         <div class="form-group">
-            <label class="control-label col-md-2 col-xs-12" for="CustomerID">Customer</label>
+            <label class="control-label col-md-2 col-xs-12" for="CustomerID" data-toggle="tooltip" data-placement="left" title="@LicenseMaintStrings.HelpCustomer">Customer</label>
             <div class="col-md-4 col-xs-9">
                 <select name="CustomerID" data-bind="options: customers, value: customer, optionsText: 'name', optionsValue: 'id'" class="form-control"></select>
             </div>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TotalUserCount, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.TotalUserCount, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpUserCount })
             <div class="col-md-4 col-xs-9">
                 @Html.EditorFor(model => model.TotalUserCount, new { htmlAttributes = new { @class = "form-control", Name = "UserCount" } })
                 @Html.ValidationMessageFor(model => model.TotalUserCount, "", new { @class = "text-danger" })
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.LicenseID, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.LicenseID, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle="tooltip", data_placement="left", title = LicenseMaintStrings.HelpLicenseID })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.LicenseID)
                 <p class="form-control-static">@Html.Raw(Model.LicenseID)</p>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.MachineName, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.MachineName, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpMachineName })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.MachineName)
                 <p class="form-control-static">@Html.Raw(Model.MachineName)</p>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.MachineID, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.MachineID, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpMachineID })
             <div class="col-md-4">
                 @Html.HiddenFor(model => model.MachineID)
                 <p class="form-control-static">@Html.Raw(Model.MachineID)</p>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.InstallPath, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.InstallPath, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpInstallPath })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.InstallPath)
                 <p class="form-control-static">@Html.Raw(Model.InstallPath)</p>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.IsPermanent, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.IsPermanent, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpPermanent })
             <div class="col-md-10">
                 @if (IsAuthorized)
                 {
@@ -79,7 +79,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.ChangeTime, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.ChangeTime, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpLastChanged })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.ChangeUserID)
                 @Html.HiddenFor(model => model.ChangeTime)
@@ -89,7 +89,7 @@
         </div>
 
         <div class="form-group compressed">
-            @Html.LabelFor(model => model.DateIssued, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.DateIssued, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpDateIssued })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.DateIssued)
                 <p class="form-control-static">@Html.Raw(Model.DateIssued)</p>
@@ -97,7 +97,7 @@
         </div>
 
         <div class="form-group compressed @(Model.IsExpired ? "has-error" : "has-success")">
-            @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12" })
+            @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "control-label col-md-2 col-xs-12", data_toggle = "tooltip", data_placement = "left", title = LicenseMaintStrings.HelpExpiryDate })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.ExpiryDate)
                 <p class="form-control-static">@Html.Raw(Model.ExpiryDate)</p>
@@ -105,7 +105,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2 col-xs-12" for="AddDays">Add Days</label>
+            <label class="control-label col-md-2 col-xs-12" for="AddDays" data-toggle="tooltip" data-placement="left" title="@LicenseMaintStrings.HelpAddDays">Add Days</label>
             <div class="col-md-4 col-xs-9">
                 @Html.EditorFor(model => model.DaysRemaining, new { htmlAttributes = new { @class = "form-control", Name = "AddDays", Value = "0" } })
                 @Html.ValidationMessageFor(model => model.DaysRemaining, "", new { @class = "text-danger" })

@@ -121,6 +121,30 @@ namespace ICSLicenseMaintV2.Controllers
         }
 
         [HttpPost]
+        public JsonResult Lookup(int id)
+        {
+            var lic = db.Licenses.SingleOrDefault(l => l.LicenseID == id);
+
+            if(lic != null)
+            {
+                return Json(new
+                {
+                    lic.CustomerSite.SiteName,
+                    lic.CustomerSite.Customer.CustomerName,
+                    lic.MachineID,
+                    lic.InstallPath,
+                    lic.MachineName,
+                    lic.TotalUserCount,
+                    lic.IsPermanent,
+                    DateIssued = lic.DateIssued.ToString("M/d/yyyy h:mm tt"),
+                    ExpiryDate = lic.ExpiryDate.ToString("M/d/yyyy h:mm tt"),
+                    ChangeTime = lic.ChangeTime.ToString("M/d/yyyy h:mm tt")
+                });
+            }
+            return Json(lic);
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CopyExisting(int targetLicense, int sourceLicense)
         {

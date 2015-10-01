@@ -29,6 +29,8 @@
                 else { return ''; }
             };
 
+            self.searchText(self.getLastSearch());
+
             $(document)
                 .ajaxStart(function () { self.loading(true); })
                 .ajaxStop(function () { self.loading(false); });
@@ -45,7 +47,11 @@
 
             self.showDemos = ko.computed(function () { return !self.delayedValue(); });
 
-            self.delayedValue.subscribe(function (val) {
+            self.delayedValue.subscribe(updateValue, self);
+
+            updateValue(self.searchText());
+
+            function updateValue(val) {
                 self.setLastSearch(val);
                 if (val !== '') {
                     if (self.request) {
@@ -56,12 +62,15 @@
                         self.licenses(data.results);
                         self.canLoadMore(data.canLoadMore)
                         self.request = undefined;
+
+                        // Enable bootstrap tooltips:
+                        $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
                     });
                 } else {
                     self.licenses([]);
                     self.canLoadMore(false);
                 }
-            }, self);
+            }
             
             self.loadMore = function () {
                 if (self.request) {
@@ -75,8 +84,6 @@
                     self.request = undefined;
                 });
             };
-
-            self.searchText(self.getLastSearch());
         }
 
         $(document).ready(function () {
@@ -105,16 +112,14 @@
     <thead>
         <tr>
             <th></th>
-            <th class="hidden-xs" title="License ID which can be found in either the weblicense or RFSV3 license files (depending on the version) in the RTTC\License directory">ID</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpLicenseID">ID</th>
             <th class="hidden-xs">Customer</th>
-            <th class="hidden-xs" title="A hash of various machine values.
-If this changes for the same server it means a customer has made a change to one of the values on their server and you will need to setup a new license.">Machine ID</th>
-            <th title="The server name of the licensed machine">Machine Name</th>
-            <th class="hidden-xs" title="The number of RF-SMART users.
-This should match the sum of all of the &quot;RF-SMART for <ERP> User&quot; records on the customer record in NetSuite.">Users</th>
-            <th class="hidden-xs" title="If check this license does not expire. If not checked this license will expire on the &quot;Expires&quot; date">Permanent</th>
-            <th class="hidden-xs" title="The date that the license record will expire (Expired records will be highlighted in red)">Expires</th>
-            <th class="hidden-xs" title="The date/time of the most recent change to the licensing record made by someone at ICS">Last Changed</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpMachineID">Machine ID</th>
+            <th data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpMachineName">Machine Name</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpUserCount">Users</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpPermanent">Permanent</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpExpiryDate">Expires</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpLastChanged">Last Changed</th>
         </tr>
     </thead>
     <tbody data-bind="foreach: licenses">

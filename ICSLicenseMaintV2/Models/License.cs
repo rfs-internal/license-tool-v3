@@ -15,6 +15,7 @@ namespace ICSLicenseMaintV2
             LicensedModules = new HashSet<LicensedModule>();
         }
 
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "LicenseID")]
         public int LicenseID { get; set; }
 
         [Required]
@@ -31,42 +32,42 @@ namespace ICSLicenseMaintV2
 
         [Required]
         [StringLength(200)]
-        [DisplayName("Machine ID")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "MachineID")]
         public string MachineID { get; set; }
 
         [Required]
         [StringLength(200)]
-        [DisplayName("Install Path")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "InstallPath")]
         public string InstallPath { get; set; }
 
         [Required]
         [StringLength(200)]
-        [DisplayName("Machine Name")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "MachineName")]
         public string MachineName { get; set; }
 
-        [DisplayName("User Count")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "UserCount")]
         public int TotalUserCount { get; set; }
 
-        [DisplayName("Time Out")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "TimeOut")]
         public bool TimeOut { get; set; }
 
-        [DisplayName("Days Remaining")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "DaysRemaining")]
         public int DaysRemaining { get; set; }
 
-        [DisplayName("Issued")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "DateIssued")]
         public DateTime DateIssued { get; set; }
 
-        [DisplayName("Last Requested Update")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "LastRequestedUpdate")]
         public DateTime LastRequestedUpdate { get; set; }
 
         // BEGIN ADD FIELDS FROM VIEW
-        [DisplayName("Last Changed By")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "ChangeUserID")]
         public string ChangeUserID { get; set; }
 
-        [DisplayName("Last Changed Type")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "ChangeType")]
         public char ChangeType { get; set; }
 
-        [DisplayName("Last Changed")]
+        [Display(ResourceType = typeof(LicenseMaintStrings), Name = "ChangeTime")]
         public DateTime ChangeTime { get; set; }
         // END ADD FIELDS FROM VIEW
 

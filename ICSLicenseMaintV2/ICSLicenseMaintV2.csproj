@@ -140,6 +140,11 @@
     <Compile Include="Controllers\LicenseSearchController.cs" />
     <Compile Include="Controllers\ProductModulesController.cs" />
     <Compile Include="Controllers\UploadLicenseController.cs" />
+    <Compile Include="LicenseMaintStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LicenseMaintStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="LicenseWebViewPage.cs" />
     <Compile Include="Models\DbContextFactory.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -281,6 +286,12 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>ICSLicenseMaintV2_ICSLicensing_RFSLicense</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LicenseMaintStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LicenseMaintStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
