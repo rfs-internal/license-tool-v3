@@ -96,9 +96,10 @@
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
+        <div class="form-actions no-color pull-right">
             <a href="javascript:history.back()" class="btn btn-default">Cancel</a>
             <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
         </div>
+        <div style="clear:both;"></div>
     }
 </div>
