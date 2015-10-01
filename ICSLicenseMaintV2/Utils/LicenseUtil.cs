@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ICSLicenseMaintV2.Utils
@@ -15,9 +16,9 @@ namespace ICSLicenseMaintV2.Utils
     public class LicenseUtil
     {
         private readonly string ServerPrivateKeyXml = "<RSAKeyValue><Modulus>yhYJ8CeBICdbOdEk/Q37cw+iWru0pVMNXDMDy57AgwNuBRDrw7e+Mqh7DAHV+0AbRn8oICcMHOPLXxb9tU+JmyPTZSCQM+kjNmgUq9BQV6jDyCliyeezbcba5Ax2UZus6FZ/U99Gxil6CDBc4tcN7Yhl8ZDRoUCx/j1DKUHWTaU=</Modulus><Exponent>AQAB</Exponent><P>6Hra+pVT5eKzhyji+Kj0HWKzCXwbqz2yHgULN7+bDdlPrIUfE6lRyQX7Sqb7GyoAhPNFZHxJURtn68MtITjO+w==</P><Q>3of+ps3YhAZD8XMmbosDKyxvb3X9vD6OUzcbxmvlwz0DD7LShQDgd1IZHv3LMQ97Dk2b48AKYXWIR0zgbfoz3w==</Q><DP>gTJNYbb9EiOji7iQMoqKZ45DW0EKi2bVBtPcwRWNkOu02HZ+p8mQNvxJA9q6cAUulrQvW0Gq6RUm8qHcAbt1Yw==</DP><DQ>2gFJDIjk8JJixYwVvn4ZYJZrpTpmlaCDNirq3vydXyPKd/qsGvi87qhTS/U+tpV/7IdDjV95y/ikxZUe2R8g6Q==</DQ><InverseQ>g/NkFczB+AyQHkCim5kE0NRJCifYyR1dyozTa0IJIwIBUsd1MCLDEOsHuTgQprvBUD6TLZz5JdVqHX2/bp8XbA==</InverseQ><D>n8R+xOwmjSowWGx+RsaYJmaU4BEIh7A6nssCVChFYQ8EG2M+UjThXSGQbnTBHOuY5MpBCfJ1BB4gOiRuHrssOSCFC9RW4Fd40Cr5f8WEFrnYxanR3ejwNpo7bpJvGdUg6lPX3d2fitzE5/sSshYcUaATVmVcDL2yamwr7dj0en0=</D></RSAKeyValue>";
-        private readonly string ClientPublicKeyXml = "<RSAKeyValue><Modulus>2rIlNAcLxeOua6eazWev4VBt1M2mG0u3LBNzZKJNFSNYRW4rxgxtliLqZ/flxeSyOUlEKOt0aDQIxIJKg3u2QHS298myHOQo3nmgyBZ0EFqZMEGb/HARdfnz9a/fR8XXWYAmOzaapT2l80G6SSFomucsghLn9N55Do4KZGuH3kk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+        private readonly string ClientPublicKeyXml =  "<RSAKeyValue><Modulus>2rIlNAcLxeOua6eazWev4VBt1M2mG0u3LBNzZKJNFSNYRW4rxgxtliLqZ/flxeSyOUlEKOt0aDQIxIJKg3u2QHS298myHOQo3nmgyBZ0EFqZMEGb/HARdfnz9a/fR8XXWYAmOzaapT2l80G6SSFomucsghLn9N55Do4KZGuH3kk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
         private readonly string ClientPrivateKeyXml = "<RSAKeyValue><Modulus>2rIlNAcLxeOua6eazWev4VBt1M2mG0u3LBNzZKJNFSNYRW4rxgxtliLqZ/flxeSyOUlEKOt0aDQIxIJKg3u2QHS298myHOQo3nmgyBZ0EFqZMEGb/HARdfnz9a/fR8XXWYAmOzaapT2l80G6SSFomucsghLn9N55Do4KZGuH3kk=</Modulus><Exponent>AQAB</Exponent><P>70JhN8kCV2Z55xG5OVy6tmyrGcXlAAjzGoohI89u0cWeiAKcQ7iStDnMgkyqFTrN9Gw1ieDFqzsaxqcBsEuPOw==</P><Q>6f9u2Rb98SpeMmbsGdtI4nPuRa6Y0Mp3GzhG/d40JOoIk4sHMlHwjOgVVIlumDMtd6Cx1UgStMFnzIvu+TA4Sw==</Q><DP>1H0DkmO27KBaS1l2QveT60f/fVg/1RQds8hRPliPd0YnUWvgFFTsFZvvgRlNRKWBHD6uHdG+PCC12w+fdE7m2Q==</DP><DQ>Z8EV4nZaZQu3NrwCJjjgKWDkHsubAME1bMFYYQqcrl2DLgCwUTSZ57CkfJZvjlbq6yc6kuphOPqkzsKhVKZ33w==</DQ><InverseQ>FViBfymiGEwmhm6QnWExEDmKIJvkSgaasx49UZsOMM4PcWWmBJpfKnnVDPoFIBPgWqxcQpB8I9npisDsXd59iw==</InverseQ><D>YE4qy+p+aLqGyKmaJfIPJa2BcEDPcR26oBJAsoQ2ZaSW7pxBcoluiLr/dqFX8flv8oItHcfyDyE66y5lGdmUu6VBxihBfo+WNtiJVCWdgBCe9PLKaZw+enf/SlLf0a/Xz1s1Rz5pOk406maj7iJkr25M0JdvBWE9/3aLAlLld/E=</D></RSAKeyValue>";
-        private readonly string ServerPublicKeyXml = "<RSAKeyValue><Modulus>yhYJ8CeBICdbOdEk/Q37cw+iWru0pVMNXDMDy57AgwNuBRDrw7e+Mqh7DAHV+0AbRn8oICcMHOPLXxb9tU+JmyPTZSCQM+kjNmgUq9BQV6jDyCliyeezbcba5Ax2UZus6FZ/U99Gxil6CDBc4tcN7Yhl8ZDRoUCx/j1DKUHWTaU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+        private readonly string ServerPublicKeyXml =  "<RSAKeyValue><Modulus>yhYJ8CeBICdbOdEk/Q37cw+iWru0pVMNXDMDy57AgwNuBRDrw7e+Mqh7DAHV+0AbRn8oICcMHOPLXxb9tU+JmyPTZSCQM+kjNmgUq9BQV6jDyCliyeezbcba5Ax2UZus6FZ/U99Gxil6CDBc4tcN7Yhl8ZDRoUCx/j1DKUHWTaU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 
         public bool GetCurrentLicense(int licenseID, out string ResponseData, out string ErrorMessage)
         {
@@ -47,6 +48,40 @@ namespace ICSLicenseMaintV2.Utils
                 return ds.Tables["license"].Rows[0].Field<int>("licenseid");
             }
             return 0;
+        }
+
+        public bool HasExistingLicense(string requestData, out int licenseId)
+        {
+            licenseId = 0;
+            try
+            {
+                bool verified = false;
+                string xmlRequest = Crypto.VerifyAndDecrypt(requestData, ClientPublicKeyXml, ServerPrivateKeyXml, ref verified);
+                if(verified)
+                {
+                    using (var context = DbContextFactory.CreateInstance())
+                    {
+                        XElement xelement = XElement.Parse(xmlRequest);
+                        var licenseIdElement = xelement.Element("LicenseId");
+                        if (licenseIdElement != null && !string.IsNullOrEmpty(licenseIdElement.Value))
+                        {
+                            licenseId = context.Database.SqlQuery<int>("SELECT LicenseId FROM Licenses WHERE LicenseId = {0}", new[] { licenseIdElement.Value }).FirstOrDefault();
+                        }
+                        else
+                        {
+                            string machineId = xelement.Element("MachineID").Value;
+                            string installPath = xelement.Element("Path").Value;
+                            string productId = xelement.Element("ProductID").Value;
+                            licenseId = context.Database.SqlQuery<int>("SELECT LicenseId FROM Licenses WHERE MachineId = {0} AND InstallPath = {1} AND ProductId = {2}", new[] { machineId, installPath, productId }).FirstOrDefault();
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return licenseId != 0;
         }
 
         private DataSet RetrieveCurrentLicense(int LicenseId)

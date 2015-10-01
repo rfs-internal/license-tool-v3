@@ -21,12 +21,21 @@ namespace ICSLicenseMaintV2.Controllers
                 string requestString = null;
                 string responseString = null;
                 string errorMessage = null;
+                var licenseUtil = new LicenseUtil();
+
                 using (var streamReader = new StreamReader(Request.Files[0].InputStream))
                 {
                     requestString = streamReader.ReadToEnd();
                     streamReader.Close();
-                }   
-                
+                }
+
+                int existingLicenseId = 0;
+                if(licenseUtil.HasExistingLicense(requestString, out existingLicenseId))
+                {
+                    this.AddAlert(AlertModel.Error("License already existed"));
+                    return RedirectToAction("Edit", "Licenses", new { id = existingLicenseId });
+                }
+
                 using (RFSLicense rfsLicense = new RFSLicense() { Url = licenseurl })
                 {
                     bool updatedLicense = false;
@@ -35,11 +44,8 @@ namespace ICSLicenseMaintV2.Controllers
                     if (updatedLicense)
                     {
                         this.AddAlert(AlertModel.Success("Demo license created. Make your changes to the license, save, then click the <b>Download License File</b> button below."));
-                        var licenseId = new LicenseUtil().GetLicenseIdFromResult(responseString);
+                        var licenseId = licenseUtil.GetLicenseIdFromResult(responseString);
                         return RedirectToAction("Edit", "Licenses", new { id = licenseId });
-                        //var cd = new System.Net.Mime.ContentDisposition { FileName = "weblicense.txt", Inline = false };
-                        //Response.AppendHeader("Content-Disposition", cd.ToString());
-                        //return File(Encoding.UTF8.GetBytes(responseString), "text");
                     }
                     else
                     {

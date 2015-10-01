@@ -65,7 +65,7 @@
                                 <tbody data-bind="foreach: modules">
                                     <tr data-bind="if: isvisible, click: function(m){ m.selected(!m.selected()) }">
                                         <td>
-                                            <input type="checkbox" data-bind="checked: selected"/>
+                                            <input type="checkbox" data-bind="checked: selected, click: function(){return true}, clickBubble: false"/>
                                         </td>
                                         <td data-bind="text: name"></td>
                                     </tr>

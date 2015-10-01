@@ -18,6 +18,14 @@
                 return self.licenses().length > 0;
             });
 
+            self.setLastSearch = function (lastSearch) {
+                if (Modernizr.localstorage) { localStorage.setItem('lastSeach', lastSearch); }
+            };
+            self.getLastSearch = function () {
+                if (Modernizr.localstorage) { return localStorage.getItem('lastSeach'); }
+                else { return ''; }
+            };
+
             $(document)
                 .ajaxStart(function () { self.loading(true); })
                 .ajaxStop(function () { self.loading(false); });
@@ -35,6 +43,7 @@
             self.showDemos = ko.computed(function () { return !self.delayedValue(); });
 
             self.delayedValue.subscribe(function (val) {
+                self.setLastSearch(val);
                 if (val !== '') {
                     if (self.request) {
                         self.request.abort();
@@ -63,6 +72,8 @@
                     self.request = undefined;
                 });
             };
+
+            self.searchText(self.getLastSearch());
         }
 
         $(document).ready(function () {
@@ -98,7 +109,7 @@
             <th class="hidden-xs">Users</th>
             <th class="hidden-xs">Permanent</th>
             <th class="hidden-xs">Expires</th>
-            <th class="hidden-xs">Last Request</th>
+            <th class="hidden-xs">Last Changed</th>
         </tr>
     </thead>
     <tbody data-bind="foreach: licenses">
@@ -124,7 +135,7 @@
                 <span data-bind="text: ExpiryDate"></span>
                 <!-- /ko -->
             </td>
-            <td data-bind="text: LastRequestedUpdate" class="hidden-xs"></td>
+            <td data-bind="text: ChangeTime" class="hidden-xs"></td>
         </tr>
     </tbody>
 </table>

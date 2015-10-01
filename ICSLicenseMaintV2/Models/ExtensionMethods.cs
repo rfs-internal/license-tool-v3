@@ -51,5 +51,23 @@ namespace ICSLicenseMaintV2
                 return DateIssued.AddDays(DaysRemaining);
             }
         }
+
+
+        [DisplayName("Product Version")]
+        public RfsmartVersion ProductVersion
+        {
+            get
+            {
+                // replace space, backslash, dot, and dash with space
+                var path = System.Text.RegularExpressions.Regex.Replace(InstallPath ?? string.Empty, @"\s|\\|\.|-", "").ToLower();
+                return path.Contains("rfsmart4") || path.Contains("rfsmart5") ? RfsmartVersion.V4 : RfsmartVersion.V3;
+            }
+        }
+    }
+
+    public enum RfsmartVersion
+    {
+        V3,
+        V4
     }
 }

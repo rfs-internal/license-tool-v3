@@ -10,7 +10,7 @@
             <th class="hidden-xs">Users</th>
             <th class="hidden-xs">Permanent</th>
             <th class="hidden-xs">Expires</th>
-            <th class="hidden-xs">Last Request</th>
+            <th class="hidden-xs">Last Change Time</th>
         </tr>
     </thead>
     <tbody>
@@ -38,9 +38,8 @@
                     @Html.DisplayFor(modelItem => item.IsPermanent)
                 </td>
                 <td class="hidden-xs">@(item.IsPermanent ? "-" : item.ExpiryDate.ToShortDateString())</td>
-                <td class="hidden-xs">@item.LastRequestedUpdate.ToShortDateString()</td>
+                <td class="hidden-xs">@item.ChangeTime.ToShortDateString()</td>
             </tr>
         }
     </tbody>
-
 </table>

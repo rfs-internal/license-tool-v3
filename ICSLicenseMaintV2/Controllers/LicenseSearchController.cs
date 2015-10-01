@@ -40,6 +40,7 @@ namespace ICSLicenseMaintV2.Controllers
                 InstallPath = l.InstallPath,
                 ExpiryDate = l.ExpiryDate.ToShortDateString(),
                 LastRequestedUpdate = l.LastRequestedUpdate.ToShortDateString(),
+                ChangeTime = l.ChangeTime.ToShortDateString(),
                 ShortMachineID = l.ShortMachineID
             }).ToList();
 

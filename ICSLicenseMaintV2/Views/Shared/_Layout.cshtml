@@ -22,14 +22,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Demo Licenses", "Index", "Licenses", new { id = "DEMO", sort = "LastRequestedUpdate", ascending=false }, new { })</li>
+                    <li>@Html.ActionLink("Demo Licenses", "Index", "Licenses", new { id = "DEMO", sort = "ChangeTime", ascending=false }, new { })</li>
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     @if (IsAuthorized)
                     {
                         <li>@Html.ActionLink("Modules", "Index", "ProductModules")</li>
                     }
                     <li>@Html.ActionLink("Global Search", "Index", "LicenseSearch")</li>
-                    <li>@Html.ActionLink("Proxy Tool", "Index", "ProxyRequest")</li>
+                    <li>@Html.ActionLink("Upload File", "Index", "ProxyRequest")</li>
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
@@ -63,6 +63,18 @@
 
             $('.modal').on('shown.bs.modal', function () {
                 $(this).find('[autofocus]').focus();
+            });
+
+            // Javascript to enable link to tab
+            var hash = document.location.hash;
+            var prefix = "tab_";
+            if (hash) {
+                $('.nav-tabs a[href=' + hash.replace(prefix, "") + ']').tab('show');
+            }
+
+            // Change hash for page-reload
+            $('.nav-tabs a').on('shown.bs.tab', function (e) {
+                window.location.hash = e.target.hash.replace("#", "#" + prefix);
             });
         })
     </script>

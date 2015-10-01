@@ -10,10 +10,7 @@
     <ul>
         <li>This will copy the Customer, User Count, Expiration Date, and Modules from the entered <i>Source License</i> to the <i>Target License</i>. </li>
         <li>Existing modules on the <i>Target License</i> will be removed.</li>
-        @if (ViewBag.SourceLicenseId != null)
-        {
-            <li>An existing license was found with a matching Machine Name, it was defaulted below.</li>
-        }
+        <li>If another license is found that matches <em>"@Model.MachineName"</em>, it's license id will default below (using the most recently changed license).</li>
     </ul>
 </div>
 

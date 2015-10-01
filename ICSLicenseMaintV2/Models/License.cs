@@ -66,7 +66,7 @@ namespace ICSLicenseMaintV2
         [DisplayName("Last Changed Type")]
         public char ChangeType { get; set; }
 
-        [DisplayName("Last Changed Time")]
+        [DisplayName("Last Changed")]
         public DateTime ChangeTime { get; set; }
         // END ADD FIELDS FROM VIEW
 

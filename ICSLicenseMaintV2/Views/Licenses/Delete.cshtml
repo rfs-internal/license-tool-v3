@@ -84,11 +84,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastRequestedUpdate)
+            @Html.DisplayNameFor(model => model.ChangeTime)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastRequestedUpdate)
+            @Html.DisplayFor(model => model.ChangeTime)
         </dd>
 
     </dl>
@@ -98,6 +98,7 @@
 
         <div class="form-actions no-color">
             <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+            <a href="javascript:history.back()" class="btn btn-primary">Cancel</a>
         </div>
     }
 </div>

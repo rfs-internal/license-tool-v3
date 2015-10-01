@@ -17,7 +17,7 @@ namespace ICSLicenseMaintV2.Controllers
         private readonly IPermissionAuthorized permissionAuth = new PermissionAuthorized();
 
         // GET: Licenses
-        public ActionResult Index(string id, string sort = "LicenseID", bool ascending = true)
+        public ActionResult Index(string id, string sort = "LicenseID", bool ascending = false)
         {
             if (id == null)
             {
@@ -207,8 +207,7 @@ namespace ICSLicenseMaintV2.Controllers
             }
 
             db.SaveChanges();
-
-            return RedirectToAction("Edit", new { id = license.LicenseID });
+            return new RedirectResult(Url.Action("Edit", new { id = license.LicenseID }) + "#tab_modules");
         }
 
         public JsonResult Modules(int id)
@@ -307,9 +306,17 @@ namespace ICSLicenseMaintV2.Controllers
 
         public ActionResult DownloadLicenseFile(int id)
         {
-            var productid = db.Licenses.Where(l => l.LicenseID == id).Select(l => l.ProductID).Single();
+            string productid = "weblicense";
             string responseData;
             string errorMessage;
+
+            var license = db.Licenses.Single(l => l.LicenseID == id);
+            
+            if(license.ProductVersion == RfsmartVersion.V4)
+            {
+                productid = license.ProductID;
+            }
+            
             if(new LicenseUtil().GetCurrentLicense(id, out responseData, out errorMessage))
             {
                 var cd = new System.Net.Mime.ContentDisposition { FileName = productid + ".txt", Inline = false };
