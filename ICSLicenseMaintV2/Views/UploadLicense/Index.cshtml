@@ -3,9 +3,9 @@
     ViewBag.Title = "Upload License File";
 }
 
-<h2>Proxy License Request</h2>
+<h2>Upload License File</h2>
 
-@using(Html.BeginForm("Upload", "ProxyRequest", FormMethod.Post, new { enctype = "multipart/form-data", @class="form-horizontal" }))
+@using(Html.BeginForm("Upload", "UploadLicense", FormMethod.Post, new { enctype = "multipart/form-data", @class="form-horizontal" }))
 {
     <div class="form-group">
         <label for="licenserequest" class="col-sm-2 control-label">Load File</label>

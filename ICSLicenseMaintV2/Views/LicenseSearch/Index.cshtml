@@ -22,7 +22,10 @@
                 if (Modernizr.localstorage) { localStorage.setItem('lastSeach', lastSearch); }
             };
             self.getLastSearch = function () {
-                if (Modernizr.localstorage) { return localStorage.getItem('lastSeach'); }
+                if (Modernizr.localstorage) {
+                    var lastSearch = localStorage.getItem('lastSeach');
+                    return lastSearch == "null" ? '' : lastSearch;
+                }
                 else { return ''; }
             };
 

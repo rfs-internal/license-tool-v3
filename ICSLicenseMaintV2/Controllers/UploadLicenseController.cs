@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ICSLicenseMaintV2.Controllers
 {
-    public class ProxyRequestController : Controller
+    public class UploadLicenseController : Controller
     {
         public ActionResult Index()
         {

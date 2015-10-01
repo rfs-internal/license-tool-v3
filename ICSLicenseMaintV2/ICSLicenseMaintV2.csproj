@@ -139,7 +139,7 @@
     <Compile Include="Controllers\LicensesController.cs" />
     <Compile Include="Controllers\LicenseSearchController.cs" />
     <Compile Include="Controllers\ProductModulesController.cs" />
-    <Compile Include="Controllers\ProxyRequestController.cs" />
+    <Compile Include="Controllers\UploadLicenseController.cs" />
     <Compile Include="LicenseWebViewPage.cs" />
     <Compile Include="Models\DbContextFactory.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -242,7 +242,7 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\LicenseSearch\Index.cshtml" />
     <Content Include="Views\Shared\_LicenseList.cshtml" />
-    <Content Include="Views\ProxyRequest\Index.cshtml" />
+    <Content Include="Views\UploadLicense\Index.cshtml" />
     <None Include="Web References\ICSLicensing\ICSLicensing.wsdl" />
     <Content Include="Web References\ICSLicensing\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
