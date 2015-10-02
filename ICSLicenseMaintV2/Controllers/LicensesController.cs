@@ -112,6 +112,12 @@ namespace ICSLicenseMaintV2.Controllers
         {
             var license = db.Licenses.Single(l => l.LicenseID == id);
 
+            ViewBag.Modules = from licensedModule in db.LicensedModules
+                              join productModule in db.ProductModules on licensedModule.ModuleID equals productModule.ModuleID
+                              where licensedModule.LicenseID == id
+                              orderby productModule.ModuleName
+                              select productModule.ModuleName;
+
             ViewBag.SourceLicenseId = db.Licenses.Where(l => l.MachineName == license.MachineName && l.LicenseID != id)
                 .OrderByDescending(l => l.ChangeTime)
                 .Select(l=>l.LicenseID.ToString())
@@ -127,6 +133,12 @@ namespace ICSLicenseMaintV2.Controllers
 
             if(lic != null)
             {
+                var modules = from licensedModule in db.LicensedModules
+                              join productModule in db.ProductModules on licensedModule.ModuleID equals productModule.ModuleID
+                              where licensedModule.LicenseID == id
+                              orderby productModule.ModuleName
+                              select productModule.ModuleName;
+
                 return Json(new
                 {
                     lic.CustomerSite.SiteName,
@@ -138,7 +150,8 @@ namespace ICSLicenseMaintV2.Controllers
                     lic.IsPermanent,
                     DateIssued = lic.DateIssued.ToString("M/d/yyyy h:mm tt"),
                     ExpiryDate = lic.ExpiryDate.ToString("M/d/yyyy h:mm tt"),
-                    ChangeTime = lic.ChangeTime.ToString("M/d/yyyy h:mm tt")
+                    ChangeTime = lic.ChangeTime.ToString("M/d/yyyy h:mm tt"),
+                    Modules = modules
                 });
             }
             return Json(lic);

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Copy Existing License";
+    var Modules = (IEnumerable<string>)ViewBag.Modules;
 }
 
 <h2>Copy Existing</h2>
@@ -14,85 +15,16 @@
     </ul>
 </div>
 
+<style>
+    .source_text {
+        text-align:right;
+    }
+</style>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-md-2 col-xs-12">Target License:</label>
-            <div class="col-md-4 col-xs-9">
-                @Model.LicenseID
-                <input type="hidden" name="targetLicense" value="@Model.LicenseID"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2 col-xs-12" for="sourceLicense">Source License:</label>
-            <div class="col-md-4 col-xs-9">
-                <input type="number" class="form-control" name="sourceLicense" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']" />
-                <span class="field-validation-valid text-danger" data-valmsg-for="sourceLicense" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Site Name:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: SiteName"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Customer Name:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: CustomerName"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Machine ID:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: MachineID"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Install Path:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: InstallPath"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Machine Name:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: MachineName"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">User Count:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: TotalUserCount"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Is Permanent:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: IsPermanent"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Date Issued:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: DateIssued"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12" for="siteName">Expiration Date:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: ExpiryDate"></p>
-            </div>
-        </div>
-        <div class="form-group compressed">
-            <label class="control-label col-md-2 col-xs-12">Last Changed:</label>
-            <div class="col-md-10 col-xs-9" data-bind="with: license">
-                <p class="form-control-static" data-bind="text: ChangeTime"></p>
-            </div>
-        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10  col-xs-12">
                 <div class="pull-right">
@@ -101,6 +33,137 @@
                 </div>
             </div>
         </div>
+        <table class="table table-hover table-condensed">
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td><h3 class="source_text">Source</h3></td>
+                    <td></td>
+                    <td><h3>Target</h3></td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.LicenseID:</label></td>
+                    <td>
+                        <input type="number" class="form-control source_text" name="sourceLicense" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']" autofocus />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="sourceLicense" data-valmsg-replace="true"></span>
+                    </td>
+                    <td></td>
+                    <td>@Model.LicenseID</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">Site Name:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: SiteName" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                    <td>@Model.CustomerSite.SiteName</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">Customer Name:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: CustomerName" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                    <td>@Model.CustomerSite.Customer.CustomerName</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.MachineID:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: MachineID" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td>@Model.MachineID</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.InstallPath:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: InstallPath" class="source_text"></p>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td>@Model.InstallPath</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.MachineName:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: MachineName" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td>@Model.MachineName</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.UserCount:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: TotalUserCount" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                    <td>@Model.TotalUserCount</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">Is Permanent:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: IsPermanent" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td>@Model.IsPermanent</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.DateIssued:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: DateIssued" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td>@Model.DateIssued</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">Expiration Date:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: ExpiryDate" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                    <td>@Model.ExpiryDate</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">@LicenseMaintStrings.ChangeTime:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p data-bind="text: ChangeTime" class="source_text" ></p>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td>@Model.ChangeTime</td>
+                </tr>
+                <tr>
+                    <td><label class="control-label">Modules:</label></td>
+                    <td>
+                        <div data-bind="with: license">
+                            <p class="source_text" data-bind="foreach: Modules">
+                                <span data-bind="text: $data"></span><br/>
+                            </p>
+                        </div>
+                    </td>
+                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                    <td>@Html.Raw(string.Join("<br/>", Modules))</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 }
 
