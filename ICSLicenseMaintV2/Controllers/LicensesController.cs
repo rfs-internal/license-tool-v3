@@ -182,7 +182,7 @@ namespace ICSLicenseMaintV2.Controllers
 
             target.CustomerID = source.CustomerID;
             target.SiteID = source.SiteID;
-            target.TimeOut = source.TimeOut;
+            // target.TimeOut = source.TimeOut;
             target.TotalUserCount = source.TotalUserCount;
             var expiryDate = source.ExpiryDate > target.ExpiryDate ? source.ExpiryDate : target.ExpiryDate;
             target.DaysRemaining = Math.Max(0, (int)(expiryDate - target.DateIssued).TotalDays);

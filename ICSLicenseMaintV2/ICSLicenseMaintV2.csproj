@@ -197,6 +197,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="log4net.config" />
+    <None Include="Properties\PublishProfiles\RFS5-HELP-RELEASE.pubxml" />
     <None Include="Properties\PublishProfiles\RFS5-HELP-TEST.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
