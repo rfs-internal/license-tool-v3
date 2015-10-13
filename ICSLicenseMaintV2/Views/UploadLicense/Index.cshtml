@@ -11,13 +11,16 @@
         <label for="licenserequest" class="col-sm-2 control-label">Load File</label>
         <div class="col-sm-10">
             <input type="file" class="form-control" name="licenserequest">
+            <input type="hidden" name="licenseurl" value="http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx" />
         </div>
     </div>
+    @*
     <div class="form-group">
         <label for="licenseurl"  class="col-sm-2 control-label">URL</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="licenseurl" value="http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx">
+            <input type="text" class="form-control" name="licenseurl" value="http://icslicense.icsfl.com/Weblicense/ICSLicensing.asmx"/>
         </div>
     </div>
+    *@
     <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Create License</button>
 }
