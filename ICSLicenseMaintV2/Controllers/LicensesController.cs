@@ -69,7 +69,6 @@ namespace ICSLicenseMaintV2.Controllers
             var license = db.Licenses.Find(edit.LicenseID);
             if(license.CustomerID != edit.CustomerID)
             {
-                edit.CustomerID = edit.CustomerID.ToUpper();
                 // They changed customers, set a new CustomerSite
                 var customerSite = db.CustomerSites.FirstOrDefault(s => s.CustomerID == edit.CustomerID && s.SiteID == edit.CustomerID);
                 if (customerSite == null)
