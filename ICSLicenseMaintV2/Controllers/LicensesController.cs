@@ -301,8 +301,6 @@ namespace ICSLicenseMaintV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.CustomerID = model.CustomerID.ToUpper();
-
                 var customer = db.Customers.SingleOrDefault(c => c.CustomerID == model.CustomerID);
                 if (customer == null)
                 {
