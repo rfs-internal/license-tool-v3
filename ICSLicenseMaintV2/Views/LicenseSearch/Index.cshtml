@@ -89,6 +89,51 @@
         $(document).ready(function () {
             ko.applyBindings(new SearchViewModel());
         });
+
+        ko.bindingHandlers.sort = {
+            all: [],
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var asc = false;
+                element.style.cursor = 'pointer';
+                var all = ko.bindingHandlers.sort.all;
+                all.push(element);
+                element.onclick = function () {
+                    var value = valueAccessor();
+                    var prop = value.prop;
+                    var data = value.arr;
+
+                    asc = !asc;
+                    all.forEach(function (x) { x.classList.remove('sorting', 'sorting_asc', 'sorting_desc'); x.classList.add('sorting'); });
+                    this.classList.remove('sorting');
+                    this.classList.add(asc ? 'sorting_asc' : 'sorting_desc');
+                    data.sort(function (left, right) {
+                        var rec1 = left;
+                        var rec2 = right;
+
+                        if (!asc) {
+                            rec1 = right;
+                            rec2 = left;
+                        }
+
+                        var props = prop.split('.');
+                        for (var i in props) {
+                            var propName = props[i];
+                            var parenIndex = propName.indexOf('()');
+                            if (parenIndex > 0) {
+                                propName = propName.substring(0, parenIndex);
+                                rec1 = rec1[propName]();
+                                rec2 = rec2[propName]();
+                            } else {
+                                rec1 = rec1[propName];
+                                rec2 = rec2[propName];
+                            }
+                        }
+
+                        return rec1 == rec2 ? 0 : rec1 < rec2 ? -1 : 1;
+                    });
+                };
+            }
+        };
     </script>
 }
 
@@ -108,16 +153,16 @@
 <!-- ko if: hasResults -->
 <hr />
 <h3>Results</h3>
-<table class="table table-condensed table-hover" id="searchResultsTable">
+<table class="table table-condensed table-hover dataTable" id="searchResultsTable">
     <thead>
         <tr>
             <th></th>
-            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpLicenseID">ID</th>
-            <th class="hidden-xs">Customer</th>
+            <th class="hidden-xs sorting" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpLicenseID" data-bind="sort: { arr: licenses, prop: 'LicenseID' }">ID</th>
+            <th class="hidden-xs sorting" data-bind="sort: { arr: licenses, prop: 'CustomerName' }">Customer</th>
             <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpMachineID">Machine ID</th>
-            <th data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpMachineName">Machine Name</th>
-            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpUserCount">Users</th>
-            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpPermanent">Permanent</th>
+            <th class="sorting" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpMachineName" data-bind="sort: { arr: licenses, prop: 'MachineName' }">Machine Name</th>
+            <th class="hidden-xs sorting" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpUserCount" data-bind="sort: { arr: licenses, prop: 'TotalUserCount' }">Users</th>
+            <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpPermanent" >Permanent</th>
             <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpExpiryDate">Expires</th>
             <th class="hidden-xs" data-toggle="tooltip" data-placement="top" title="@LicenseMaintStrings.HelpLastChanged">Last Changed</th>
         </tr>
